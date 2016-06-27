@@ -1,0 +1,25 @@
+###############
+# elimina todos os elementos da memória
+reset ;
+# muda ao modo modelo
+model NILM_LP_model.mod;
+# muda ao modo modelo
+data NILM_LP_data_2.dat;
+# define CPLEX como solucionador ou solver
+option solver cplex;
+
+# soluciona o modelo e imprime
+include NILM_LP_head.inc;
+repeat{
+
+	let TS2 := disc_i .. disc_i + window;
+	solve;
+	let disc_i := disc_i + window+1;
+	
+	include NILM_LP_mid.inc;
+	
+	printf "%2d\% done \n", floor((disc_i+window)/card(TS)*100);
+
+} while disc_i + window < card(TS);
+
+include NILM_LP_foot.inc;
