@@ -1,1 +1,1 @@
-"# NILM_LP" 
+# NILM - Linear Programming based Algorithm
