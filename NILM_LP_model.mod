@@ -1,4 +1,4 @@
-# definicao dos conjuntos e parametros
+## definicao dos conjuntos e parametros
 set ESTADO;
 set TS;
 set TS2;
@@ -11,23 +11,26 @@ param mindisc{ESTADO};
 param numdisp;
 param Ptotal{TS};
 
-# Definicao das variaveis
+## Definicao das variaveis
 var X{ESTADO,TS2} binary;
 var DELTA{TS2};
 var Pe{e in ESTADO} >= 0.95*Pdisp[e], <= 1.05*Pdisp[e];
 var PeX{ESTADO,TS2};
 
-# definicao da funcao objetivo
+## Definicao da funcao objetivo
 minimize erro_quadratico: 
   sum{t in TS2} DELTA[t];
  
-# Definicao das restricoes
+## Definicao das restricoes
+
+# Minimizar erro absoluto
 subject to diferenca_combinatoria_1 {t in TS2}:
   Ptotal[t] - sum{e in ESTADO} PeX[e,t] <= DELTA[t];
 
 subject to diferenca_combinatoria_2 {t in TS2}:
   Ptotal[t] - sum{e in ESTADO} PeX[e,t] >= -DELTA[t];
-  
+
+# Intervalo de 5% identificação cargas  
 subject to diferenca_combinatoria_3 {e in ESTADO, t in TS2}:
   PeX[e,t] <= 1.05*Pdisp[e]*X[e,t];
 
@@ -39,10 +42,22 @@ subject to diferenca_combinatoria_5 {e in ESTADO, t in TS2}:
 
 subject to diferenca_combinatoria_6 {e in ESTADO, t in TS2}:
   0.95*Pdisp[e]*(1-X[e,t]) <= Pe[e] - PeX[e,t];
- 
-#subject to numero_minimo_amostras {e in ESTADO, t in 1..(card(TS2)-mindisc[e]+1) : mindisc[e]>1 and t > 1}:
-#  sum{n in t..(t+mindisc[e]-1)} (X[e,n]) >= mindisc[e]*(X[e,t] - X[e,t-1]);
+
   
-subject to evitar_sobreposicao {t in TS2, d in 1..numdisp}:
-#   X[2,t] + X[3,t] + X[4,t] <= 1;# Estados correspondentes ao Washer
-  sum{e in ESTADO : disp[e] == d} X[e,t] <= 1; 
+  
+  
+  
+  
+####################old stuff ############## 
+# subject to numero_minimo_amostras {e in ESTADO, t in disc_i..(disc_i + window - mindisc[e] + 1) : mindisc[e]>1 and t > disc_i}:
+#  sum{n in t..(t+mindisc[e]-1)} (X[e,n]) >= mindisc[e]*(X[e,t] - X[e,t-1]);
+
+# Condição para limitar o número de cargas acionadas em um mesmo instante para uma  
+#subject to limitar_acionamento_1 {t in TS2 : t > disc_i}:
+#  sum{e in ESTADO} (X[e,t] - X[e,t-1]) <= 1;
+
+#subject to limitar_acionamento_2 {t in TS2 : t > disc_i}:
+#  sum{e in ESTADO} (X[e,t] - X[e,t-1]) >= -1;
+  
+#subject to evitar_sobreposicao {t in TS2, d in 1..numdisp}:
+#  sum{e in ESTADO : disp[e] == d} X[e,t] <= 1; 

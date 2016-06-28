@@ -7,7 +7,7 @@ DELTA = delta;
 X = x;
 ESTADO = estado;
 Ptotalorg = ptotalorg;
-
+figure,
 % Vetores
 TS = X(:,1);
 Pdisp = X(:,2:end)*diag(ESTADO(:,2));
