@@ -7,6 +7,6 @@ for {t in TS2} {
    }   
    printf "\n" > x.m;
    
-   printf "%8d  %8.4f \n",t,Ptotal[t] > Ptotalorg.m;
+   printf "%8d  %8.4f \n",t,Ptotal[t] > ptotalorg.m;
    
 }

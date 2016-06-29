@@ -7,7 +7,7 @@ DELTA = delta;
 X = x;
 ESTADO = estado;
 Ptotalorg = ptotalorg;
-figure,
+    
 % Vetores
 TS = X(:,1);
 Pdisp = X(:,2:end)*diag(ESTADO(:,2));
@@ -26,7 +26,7 @@ title('Disaggregation Results')
 
 % Plot inferior
 subplot(2,1,2)
-stem(DELTA(:,2),':.')
+bar(DELTA(:,2))
 xlabel('Timestamp (t)')
 ylabel('Delta [W]')
 title('Error')

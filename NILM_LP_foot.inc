@@ -13,5 +13,5 @@ printf "ESTADO = [ \n" > estado.m;
 printf "]; \n\n" > estado.m;
 printf "return;\n\n" > estado.m;
 
-printf "]; \n\n" > Ptotalorg.m;
-printf "return;\n\n" > Ptotalorg.m;
+printf "]; \n\n" > ptotalorg.m;
+printf "return;\n\n" > ptotalorg.m;

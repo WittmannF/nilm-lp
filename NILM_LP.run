@@ -16,7 +16,7 @@ repeat{
 	let TS2 := disc_i .. disc_i + window;
 	solve;
 	let disc_i := disc_i + window+1;
-	
+	display ua, up > dados.out;
 	include NILM_LP_mid.inc; # imprime meio
 		
 	printf "%2d\% done \n", floor((disc_i+window)/card(TS)*100);
