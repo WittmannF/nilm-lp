@@ -16,6 +16,8 @@ var X{ESTADO,TS2} binary;
 var DELTA{TS2};
 var Pe{e in ESTADO} >= 0.95*Pdisp[e], <= 1.05*Pdisp[e];
 var PeX{ESTADO,TS2};
+var ua{ESTADO,TS2} binary;
+var up{ESTADO,TS2} binary;
 
 ## Definicao da funcao objetivo
 minimize erro_quadratico: 
@@ -23,7 +25,7 @@ minimize erro_quadratico:
  
 ## Definicao das restricoes
 
-# Minimizar erro absoluto
+# erro absoluto
 subject to diferenca_combinatoria_1 {t in TS2}:
   Ptotal[t] - sum{e in ESTADO} PeX[e,t] <= DELTA[t];
 
@@ -41,12 +43,16 @@ subject to diferenca_combinatoria_5 {e in ESTADO, t in TS2}:
   Pe[e] - PeX[e,t] <= 1.05*Pdisp[e]*(1-X[e,t]);
 
 subject to diferenca_combinatoria_6 {e in ESTADO, t in TS2}:
-  0.95*Pdisp[e]*(1-X[e,t]) <= Pe[e] - PeX[e,t];
+  0.95*Pdisp[e]*(1-X[e,t]) <= Pe[e] - PeX[e,t]; 
 
-  
-  
-  
-  
+# Evitar que múltiplos estados da mesma carga sejam ativados  
+subject to evitar_sobreposicao {t in TS2, d in 1..numdisp}:
+  sum{e in ESTADO : disp[e] == d} X[e,t] <= 1;   
+
+## Variaveis de mudanca de estados
+#subject to calculo_ligado {t in TS2, e in ESTADO : t > disc_i}:
+#  X[e,t] - X[e,t-1] = ua[e,t] - up[e,t];
+	
   
 ####################old stuff ############## 
 # subject to numero_minimo_amostras {e in ESTADO, t in disc_i..(disc_i + window - mindisc[e] + 1) : mindisc[e]>1 and t > disc_i}:
