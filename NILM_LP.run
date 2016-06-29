@@ -4,22 +4,29 @@ reset ;
 # muda ao modo modelo
 model NILM_LP_model.mod;
 # muda ao modo modelo
-data NILM_LP_data_2.dat;
+data NILM_LP_data_3_teste-tempo.dat;
 # define CPLEX como solucionador ou solver
 option solver cplex;
 
 # soluciona o modelo e imprime
-include NILM_LP_head.inc;
+
+include NILM_LP_head.inc; # Impressao de cabeçalhos
 repeat{
 
 	let TS2 := disc_i .. disc_i + window;
 	solve;
 	let disc_i := disc_i + window+1;
 	
-	include NILM_LP_mid.inc;
-	
+	include NILM_LP_mid.inc; # imprime meio
+		
 	printf "%2d\% done \n", floor((disc_i+window)/card(TS)*100);
 
 } while disc_i + window < card(TS);
 
-include NILM_LP_foot.inc;
+# Finalizar janela
+let TS2 := disc_i .. card(TS);
+solve;
+include NILM_LP_mid.inc;
+	
+
+include NILM_LP_foot.inc; # Imprime rodapé de arquivos de dados
