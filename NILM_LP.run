@@ -27,5 +27,4 @@ let TS2 := disc_i .. card(TS);
 solve;
 include NILM_LP_mid.inc;
 	
-
 include NILM_LP_foot.inc; # Imprime rodapé de arquivos de dados
