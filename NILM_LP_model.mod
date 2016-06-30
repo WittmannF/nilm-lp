@@ -7,6 +7,7 @@ param disc_i; # discretizacao inicial
 param window; # tamanho da janela
 param disp{ESTADO};
 param ant{ESTADO}; # Estado anterior
+param Xprev{ESTADO}; # Estado anterior
 param Pdisp{ESTADO};
 param mindisc{ESTADO}; 
 param numdisp;
@@ -54,13 +55,21 @@ subject to evitar_sobreposicao {t in TS2, d in 1..numdisp}:
 subject to calculo_ligado {t in TS2, e in ESTADO : t > disc_i}:
   X[e,t] - X[e,t-1] = ua[e,t] - up[e,t];
 
-subject to impedir_igualdade {t in TS2, e in ESTADO : t > disc_i}: #impedir que ua e up sejam iguais a 1 simultaneamente
+subject to variavel_inicial {e in ESTADO, t in TS2: t>1 and t = disc_i}:
+  X[e,disc_i] - Xprev[e] = ua[e,t] - up[e,t];
+    
+subject to impedir_igualdade {t in TS2, e in ESTADO}: #impedir que ua e up sejam iguais a 1 simultaneamente
   ua[e,t] + up[e,t] <= 1;  
   
 # Limitar estado anterior  
-subject to maquina_estados {t in TS2, e in ESTADO : t > disc_i and ant[e] > 0}:
+subject to maquina_estados {t in TS2, e in ESTADO : ant[e] > 0}:
   ua[e,t] = up[ant[e],t];
-
+  
+# Diminuir processamento setando zero quando potencia for baixa  
+subject to set_zero {t in TS2, e in ESTADO : Ptotal[t] < 10}:
+  X[e,t] = 0;
+  
+  
 ## Variaveis de mudanca de estados
 #subject to calculo_ligado {t in TS2, e in ESTADO : t > disc_i}:
 #  X[e,t] - X[e,t-1] = ua[e,t] - up[e,t];

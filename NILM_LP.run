@@ -13,12 +13,20 @@ option solver cplex;
 include NILM_LP_head.inc; # Impressao de cabeçalhos
 repeat{
 
+	printf "%2d\% done \n", floor((disc_i+window)/card(TS)*100);
 	let TS2 := disc_i .. disc_i + window;
 	solve;
+	
+	# Comunication between windows
+	for {e in ESTADO} {
+		let Xprev[e] := X[e,disc_i + window];
+	}
 	let disc_i := disc_i + window+1;
 	
+	display ua, up > dados.out;
+	
 	include NILM_LP_mid.inc; # imprime meio	
-	printf "%2d\% done \n", floor((disc_i+window)/card(TS)*100);
+	
 
 } while disc_i + window < card(TS);
 

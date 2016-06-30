@@ -42,5 +42,5 @@ param:  ESTADO: disp  ant   Pdisp  mindisc :=
 let numdisp := 3;
 
 let disc_i :=1;
-let window :=13;
+let window :=1;
 		
