@@ -23,16 +23,13 @@ var up{ESTADO,TS2} binary;
 
 ## Definicao da funcao objetivo
 minimize erro_quadratico: 
-  sum{t in TS2} DELTA[t];
+  sum{t in TS2} DELTA[t]^2;
  
 ## Definicao das restricoes
 
 # erro absoluto
 subject to diferenca_combinatoria_1 {t in TS2}:
-  Ptotal[t] - sum{e in ESTADO} PeX[e,t] <= DELTA[t];
-
-subject to diferenca_combinatoria_2 {t in TS2}:
-  Ptotal[t] - sum{e in ESTADO} PeX[e,t] >= -DELTA[t];
+  Ptotal[t] - sum{e in ESTADO} PeX[e,t] = DELTA[t];
 
 # Intervalo de 5% identificação cargas  
 subject to diferenca_combinatoria_3 {e in ESTADO, t in TS2}:

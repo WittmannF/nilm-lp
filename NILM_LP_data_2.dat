@@ -22203,11 +22203,12 @@ param: TS:  Ptotal:=
 
 param:  ESTADO: disp  ant   Pdisp  mindisc :=
 #                             [W]  [amostras] 
-        1        1    0       130    1
-        2        2    0      3000    1
-        3        2    2        80    1
-        4        2    3       550    1
-        5        3    0       850    1;
+		1		 1	  0		  145	 3
+        2        1    0       130    1
+        3        2    0      3000    1
+        4        2    0        80    1
+        5        2    3       550    1
+        6        3    0       850    1;
 
 let numdisp := 3;
 
