@@ -4,7 +4,7 @@ reset ;
 # muda ao modo modelo
 model NILM_LP_model.mod;
 # muda ao modo modelo
-data NILM_LP_data_3_teste-tempo.dat;
+data NILM_LP_data_2.dat;
 # define CPLEX como solucionador ou solver
 option solver cplex;
 
@@ -16,14 +16,13 @@ repeat{
 	let TS2 := disc_i .. disc_i + window;
 	solve;
 	let disc_i := disc_i + window+1;
-	display ua, up > dados.out;
-	include NILM_LP_mid.inc; # imprime meio
-		
+	
+	include NILM_LP_mid.inc; # imprime meio	
 	printf "%2d\% done \n", floor((disc_i+window)/card(TS)*100);
 
 } while disc_i + window < card(TS);
 
-# Finalizar janela
+# Finalizar janela 	
 let TS2 := disc_i .. card(TS);
 solve;
 include NILM_LP_mid.inc;
