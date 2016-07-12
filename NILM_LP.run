@@ -12,7 +12,7 @@ option solver cplex;
 include NILM_LP_head.inc; # Impressao de cabeçalhos
 repeat{
 
-	printf "%2d\% done \n", floor((disc_i+window)/card(TS)*100);
+	printf "%2d\% working... \n", floor((disc_i+window)/card(TS)*100);
 	let TS2 := disc_i .. disc_i + window;
 		
 	solve;

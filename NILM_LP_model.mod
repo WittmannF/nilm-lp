@@ -40,10 +40,12 @@ subject to evitar_sobreposicao {t in TS2, d in 1..numdisp}:
   sum{e in ESTADO : disp[e] == d} X[e,t] <= 1;     
  
  
-# Definir estados para 0 quando a leitura total for menor que 30W  
+# Definir estados para 0 quando a leitura total for menor que 30W ou maior que 40% 
 subject to set_zero {t in TS2, e in ESTADO : Ptotal[t] < 30}:
   X[e,t] = 0;
 
+# subject to set_zero2 {t in TS2, e in ESTADO : 1.4*Ptotal[t] < Pdisp[e]}:
+  #X[e,t] = 0;
   
 # Variaveis para armazenar mudança de estados
 subject to calculo_ligado {t in TS2, e in ESTADO : t > disc_i}:
@@ -52,8 +54,6 @@ subject to calculo_ligado {t in TS2, e in ESTADO : t > disc_i}:
 subject to impedir_igualdade {t in TS2, e in ESTADO}: #impedir que ua e up sejam iguais a 1 simultaneamente
   ua[e,t] + up[e,t] <= 1; 
   
-  
-# Transferir informacao de estados entre janelas
 subject to variavel_inicial {e in ESTADO, t in TS2: t>1 and t = disc_i}:
   X[e,disc_i] - Xprev[e] = ua[e,t] - up[e,t];
     
@@ -66,7 +66,7 @@ subject to maquina_estados {t in TS2, e in ESTADO : ant[e] > 0}:
 subject to numero_minimo_amostras {e in ESTADO, t in disc_i..(disc_i + window - mindisc[e] -1) : mindisc[e]>1 and t > disc_i}:
   sum{n in t..(t+mindisc[e]-1)} (X[e,n]) >= mindisc[e]*(X[e,t] - X[e,t-1]);
 
-#################### Restricoes que nao trouxeram melhoras ou nao funcionaram como esperado ############## 
+#################### Outras Restrições ############## 
 
 # Definir para zero todas as cargas maiores que 40% do valor total  
 #subject to set_zero {t in TS2, e in ESTADO : Ptotal[t] < 1.4*Pdisp[e]}:
