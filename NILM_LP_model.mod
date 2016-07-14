@@ -11,7 +11,8 @@ param Xprev{ESTADO};    	# Estado X anterior
 param Pdisp{ESTADO};    	# Potência dos estados
 param mindisc{ESTADO};  	# Número mínimo de discretizações
 param numdisp;				# Número de dispositivos
-param Ptotal{TS};			# Potência total da leitura do medidor
+param Ptotal{TS};			# Potência Ativa total da leitura do medidor
+param Qtotal{TS};			# Potencia Reativa total
 
 ## Definicao das variaveis
 var X{ESTADO,TS2} binary;   # Estado X do dispositivo e in ESTADO para o instante de tempo t in TS2
@@ -44,7 +45,7 @@ subject to evitar_sobreposicao {t in TS2, d in 1..numdisp}:
 subject to set_zero {t in TS2, e in ESTADO : Ptotal[t] < 30}:
   X[e,t] = 0;
 
-# subject to set_zero2 {t in TS2, e in ESTADO : 1.4*Ptotal[t] < Pdisp[e]}:
+# subject to set_zero2 {t in TS2, e in ESTADO : Ptotal[t] < Pdisp[e]}:
   #X[e,t] = 0;
   
 # Variaveis para armazenar mudança de estados

@@ -4,7 +4,7 @@ reset ;
 # muda ao modo modelo
 model NILM_LP_model.mod;
 # muda ao modo modelo
-data NILM_LP_data_15s.dat;
+data NILM_LP_data_system2.dat;
 # define CPLEX como solucionador ou solver
 option solver cplex;
 
@@ -14,7 +14,7 @@ repeat{
 
 	printf "%2d\% working... \n", floor((disc_i+window)/card(TS)*100);
 	let TS2 := disc_i .. disc_i + window;
-		
+	printf "Window Frontier: %d \n",disc_i;	
 	solve;
 	include NILM_LP_mid.inc; # imprime meio	
 	
