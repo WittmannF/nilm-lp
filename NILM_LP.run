@@ -4,7 +4,7 @@ reset ;
 # muda ao modo modelo
 model NILM_LP_model.mod;
 # muda ao modo modelo
-data NILM_LP_data_15s.dat;
+data NILM_LP_data_system2.dat;
 # define CPLEX como solucionador ou solver
 option solver cplex;
 
@@ -13,16 +13,19 @@ include NILM_LP_head.inc; # Impressao de cabeçalhos
 repeat{
 
 	printf "%2d\% working... \n", floor((disc_i+window)/card(TS)*100);
-	let TS2 := disc_i .. disc_i + window;
-		
+	let Tf := disc_i + window;
+	let TS2 := disc_i .. Tf;
+	
 	solve;
 	include NILM_LP_mid.inc; # imprime meio	
 	
 	# Comunication between windows
 	for {e in ESTADO} {
-		let Xprev[e] := X[e,disc_i + window];
+		let Xprev[e] := X[e,Tf];
+		let Soma_X[e] := sum{t in (Tf - mindisc[e] + 2) .. Tf}(X[e,t]);
+		let G[e] := min(disc_i + window, (mindisc[e] - Soma_X[e])*Xprev[e]);
 	}
-	let disc_i := disc_i + window+1;
+	let disc_i := disc_i + window + 1;
 	
 
 } while disc_i + window < card(TS);

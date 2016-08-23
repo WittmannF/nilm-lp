@@ -1482,17 +1482,16 @@ param: TS:  Ptotal:=
 ;
 
 
-param:  ESTADO: disp  ant   Pdisp  mindisc :=
-#                             [W]  [amostras] 
-		1		 1	  0		  145	 5
-        2        1    1       130    20
-        3        2    0      2950    20
-        4        2    3        90    80
-        5        2    4       550    20
-        6        3    0       850    20;
+param:  ESTADO:	disp	ant		Pdisp	mindisc :=
+#								[W]		[amostras] 
+		1		1		0		145		5
+		2		1		1		130		20
+		3		2		0		2950	20
+		4		2		3		90		80
+		5		2		4		550		20
+		6		3		0		850		20;
 
 let numdisp := 3;
-
-let disc_i :=1;
-let window :=490;
-		
+let disc_i := 1;
+let window := 100;
+let TH := 30;
