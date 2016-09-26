@@ -14,6 +14,7 @@ TV_P = DATA(:,11);
 TV_Q = DATA(:,12);
 All_P = DATA(:,13);
 All_Q = DATA(:,14);
+T = 1:1440;
 
 figure, plot(TV_P)
 hist(DishWs_P(DishWs_P>30),1000)
@@ -112,3 +113,12 @@ plot(T,TV_P,T,TV_Q)
 plot(T,TV_Q)
 hist(TV_Q(TV_Q>10),1000)
 median(TV_Q(TV_P>180 & TV_P<370 ))
+
+% Get Q data from Kitchenwall
+plot(T,Kitchenwall_P,T,Kitchenwall_Q)
+bar(T,[Kitchenwall_P Kitchenwall_Q])
+legend('P','Q')
+title('KitchenWall model')
+plot(T,Kitchenwall_P)
+figure, hist(Kitchenwall_P(Kitchenwall_P>10),1000)
+median(Kitchenwall_Q(Kitchenwall_P>3400 & Kitchenwall_P<3550 ))
