@@ -2,9 +2,9 @@
 # elimina todos os elementos da memória
 reset ;
 # muda ao modo modelo
-model NILM_LP_model.mod;
+model NILM_LP_model_Q.mod;
 # data model: choose between NILM_LP_data_15s.dat and NILM_LP_data_system2.dat
-data NILM_LP_data_system2.dat;
+data NILM_LP_data_system2_Q.dat;
 # define CPLEX como solucionador ou solver
 option solver cplex;
 

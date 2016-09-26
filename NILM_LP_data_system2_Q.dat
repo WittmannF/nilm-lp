@@ -1444,20 +1444,21 @@ param: TS:  Ptotal   Qtotal:=
 
 param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
 #                             [W] 	     [W]    [amostras] 
-        1        1    0      4606 	    4606      25 # Dryer 1 - 
-		2		 1	  1		  252	     252       5 # Dryer 2 - Median of the most frequent state
-        3        2    0       751 	     751       5#10 # DishWasher 1
-        4        2    0       478  	     478      15 # DishWasher 2
-        5        2    0       136        136      15 # DishWasher 3
-        6        3    0       129 	     129      10 # Fridge
-		7		 4	  0		   37	      37      30#60 # Heatpump 1
-		8		 4	  0		 1807	    1807      10 # Heatpump 2
-		9		 4    7      2435	    2435      30#40 # Heatpump 3
-		10		 5	  0		 3358	    3358      10 # Kitchenwall 1	
-		11		 5    0		 2796	    2796      10 # Kitchenwall 2
-		12	     5    0		   44	      44      10 # Kitchenwall3
-		13		 6	  0		   38	      38      30#60 # TV entert2
-		14		 6	 13		  239	     239      30 # TV entert3
+        1        1    0      4606 	     413      25 # Dryer 1
+		2		 1	  1		  252	     413       5 # Dryer 2
+        3        2    0       751 	      34       5 # DishWasher 1
+        4        2    0       478  	       0      15 # DishWasher 2
+        5        2    0       136         34      15 # DishWasher 3
+        6        3    0       129 	       6      10 # Fridge
+		7		 4	  0		   37	      17      30 # Heatpump 1
+		8		 4	  0		 1807	     324      10 # Heatpump 2
+		9		 4    7      2435	     429      30 # Heatpump 3
+		10		 5	  0		 3442	     141      10 # Kitchenwall 1
+		11		 5	  0		 3305	     133      10 # Kitchenwall 1		
+		12		 5    0		 2796	     130      10 # Kitchenwall 2
+		13	     5    0		   44	      38      10 # Kitchenwall3
+		14		 6	  0		   38	      13      30 # TV entert2
+		15		 6	 14		  239	      31      30 # TV entert3
 		;
 
 let numdisp := 6;
