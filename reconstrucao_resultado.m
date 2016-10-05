@@ -2,6 +2,19 @@ clc
 clear all
 close all
 
+% Ler dados originais
+time = M(:,1);
+refr = M(:,2);
+wash = M(:,3);
+stove = M(:,4);
+all = M(:,5);
+
+bar(time, [refr wash stove], 'stacked')
+legend('Refr','Washing Machine','Stove')
+xlabel('# of Samples')
+ylabel('Power [W]')
+title('Scenario 1 for disagreggation')
+
 % Ler arquivos com dados
 DELTA = delta;
 X = x;
