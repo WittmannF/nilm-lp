@@ -23,6 +23,24 @@ F = [1 1 0 0 0 0 0 0 0 0 0 0 0 0 0
 K = F*diag(ESTADO(:,2));
 Pdisp = X(:,2:end)*K';
 
+%% Read results from AMPL for CO
+X_co = x_co;
+ESTADO_co = estado_co;
+
+% Vectors
+TS_co = X_co(:,1); 
+Pdisp_co = X_co(:,2:end)*diag(ESTADO_co(:,2));
+Ptotal_co = X_co(:,2:end)*ESTADO_co(:,2);
+
+F_co = [1 1 0 0 0 0 0 0 0 0 0 0 0 0 0
+     0 0 1 1 1 0 0 0 0 0 0 0 0 0 0
+     0 0 0 0 0 1 0 0 0 0 0 0 0 0 0
+     0 0 0 0 0 0 1 1 1 0 0 0 0 0 0
+     0 0 0 0 0 0 0 0 0 1 1 1 1 0 0
+     0 0 0 0 0 0 0 0 0 0 0 0 0 1 1];
+ 
+K_co = F_co*diag(ESTADO_co(:,2));
+Pdisp_co = X_co(:,2:end)*K_co';
 %% Read ground truth data
 DATA = csvread('ground_truth.csv');
 time = 1:length(DATA);
@@ -52,64 +70,60 @@ for name = names
     i = i+1;    
 end
 
-%% Plot Results
-% Subplot Ground Truth Data
+
+%% Subplot Ground Truth Data
 sp(1) = subplot(4,1,1);
-bar(time, [CDE_P DWE_P FGE_P HPE_P WOE_P TV_P],'stacked');
+bar(time, [CDE_P DWE_P FGE_P HPE_P WOE_P TV_P],1,'stacked');
 hold on
 P = bar(0); % Additional element in the legend for unknown loads
 set(P(1),'facecolor',[0.5 0.5 0.5])
 set(P(1),'facecolor',[0.5 0.5 0.5])
 L = legend('CDE','DWE','FGE','HPE','WOE',' TV','Unkn');
-ylabel('Power [W]')
-t(1) = title('Ground Truth Data');
+ylabel(sprintf('(a)\nPower [W]'))
+t(1) = title('(a) Ground Truth Data');
 axis(axis_coord)
 set(gca,'xtick',[],'fontsize',7)
 %legend('Location','northwest')
 
-% Subplot CO data
+%% Subplot CO data
 sp(2) = subplot(4,1,2);
-Pdisp = X(:,2:end)*K';
-bar(TS, Pdisp,'stacked');
+Pdisp_co = X_co(:,2:end)*K_co';
+bar(TS_co, Pdisp_co,1,'stacked');
 ylabel('Power [W]')
-t(2) = title('Combinatorial Optimization');
+t(2) = title('(b) Combinatorial Optimization');
 axis(axis_coord)
 set(gca,'xtick',[],'fontsize',7)
 
-% hold on
-
-axes('position',[.17 .6 .1 .07]) % Put subzoom
-b = bar(Pdisp(700:800,:), 'stacked', 'EdgeColor', 'none');
+% Add zoom plots
+ssp(1) = axes('position',[.17 .6 .1 .07]); % Put subzoom
+b = bar(Pdisp_co(600:700,:),1, 'stacked', 'EdgeColor', 'none');
 axis tight
 set(gca,'xtick',[],'ytick',[]);
 
-axes('position',[.43 .6 .1 .07]) % Put subzoom
-b = bar(Pdisp(700:800,:), 'stacked', 'EdgeColor', 'none');
-axis tight
-set(gca,'xtick',[],'ytick',[]);
-
-
-axes('position',[.67 .6 .1 .07]) % Put subzoom
-b = bar(Pdisp(700:800,:), 'stacked', 'EdgeColor', 'none');
+ssp(2) = axes('position',[.43 .6 .1 .07]); % Put subzoom
+b = bar(Pdisp_co(800:900,:),1, 'stacked', 'EdgeColor', 'none');
 axis tight
 set(gca,'xtick',[],'ytick',[]);
 
 
+ssp(3) = axes('position',[.67 .6 .1 .07]); % Put subzoom
+b = bar(Pdisp_co(1050:1150,:),1, 'stacked', 'EdgeColor', 'none');
+axis tight
+set(gca,'xtick',[],'ytick',[]);
 
-
-% Subplot Full Model data
+%% Subplot Full Model data
 sp(3) = subplot(4,1,3);
 Pdisp = X(:,2:end)*K';
-bar(TS, Pdisp,'stacked');
+bar(TS, Pdisp, 1,'stacked');
 set(gca,'xtick',[],'fontsize',7)
 ylabel('Power [W]')
-t(3) = title('This Work');
+t(3) = title('(c) This Work');
 axis(axis_coord)
 
 
-% Subplot Patter Recognition data
+%% Subplot Patter Recognition data
 sp(4) = subplot(4,1,4);
-P = bar(PATREC,'stacked');
+P = bar(PATREC,1,'stacked');
 C = [53 42 134;
     12 116 220;
     6 169 193;
@@ -121,7 +135,7 @@ end
 set(gca,'fontsize',7)
 xlabel('Index of the element (min)')
 ylabel('Power [W]')
-t(4) = title('Pattern Recognition');
+t(4) = title('(d) Pattern Recognition');
 axis(axis_coord)
 
 
@@ -142,8 +156,25 @@ end
 % Size of each subplot
 for i = 1:4
     sp(i).Position(4) = sp(i).Position(4)*1.35;
+    sp(i).Position(1) = 0.07;
+    sp(i).Position(3) = 0.9;
 end
 
 % Position of the legend
-L.Position = [0.14, 0.785, 0.0950, 0.1854];
+L.Position = [0.09, 0.785, 0.0950, 0.1854];
 
+% Size of the subplots adjusted
+for i = 1:3
+    ssp(i).Position(4) = 0.1;
+end
+
+ssp(1).Position(1) = 0.12;
+ssp(2).Position(1) = 0.45;
+ssp(3).Position(1) = 0.7;
+
+% Plot lines on CO2
+subplot(sp(2))
+hold on;
+plot([570 610], [1370 800], '-', 'Color', [0.5 0.5 0.5])
+plot([900 900], [1370 800], '-', 'Color', [0.5 0.5 0.5])
+plot([1080 1130], [1000 1370], '-', 'Color', [0.5 0.5 0.5])
