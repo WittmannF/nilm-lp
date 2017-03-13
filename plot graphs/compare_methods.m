@@ -65,7 +65,7 @@ ylabel('Power [W]')
 t(1) = title('Ground Truth Data');
 axis(axis_coord)
 set(gca,'xtick',[],'fontsize',7)
-legend('Location','northwest')
+%legend('Location','northwest')
 
 % Subplot CO data
 sp(2) = subplot(4,1,2);
@@ -139,6 +139,11 @@ for i = 1:4
     t(i).Position(2) = t(i).Position(2) - 1250;
 end
 
+% Size of each subplot
 for i = 1:4
-    sp(i).Position(4) = sp(i).Position(4)*1.4;
+    sp(i).Position(4) = sp(i).Position(4)*1.35;
 end
+
+% Position of the legend
+L.Position = [0.14, 0.785, 0.0950, 0.1854];
+
