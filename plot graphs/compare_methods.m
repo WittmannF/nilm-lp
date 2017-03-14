@@ -96,20 +96,35 @@ set(gca,'xtick',[],'fontsize',7)
 
 % Add zoom plots
 ssp(1) = axes('position',[.17 .6 .1 .07]); % Put subzoom
-b = bar(Pdisp_co(600:700,:),1, 'stacked', 'EdgeColor', 'none');
-axis tight
-set(gca,'xtick',[],'ytick',[]);
+b = bar(Pdisp_co,1, 'stacked', 'EdgeColor', 'none');
+%axis tight
+axis([600 650 0 900])
+%set(gca,'xtick',[],'ytick',[]);
+set(gca,'fontsize',5)
+xticks([600 650])
+yticks([450 900])
 
 ssp(2) = axes('position',[.43 .6 .1 .07]); % Put subzoom
-b = bar(Pdisp_co(800:900,:),1, 'stacked', 'EdgeColor', 'none');
+b = bar(Pdisp_co,1, 'stacked', 'EdgeColor', 'none');
 axis tight
-set(gca,'xtick',[],'ytick',[]);
-
+%set(gca,'xtick',[],'ytick',[]);
+axis([900 1000 0 1100])
+set(gca,'fontsize',5)
+xticks([900 1000])
+%yticks([500 1000])
+set(gca,'ytick',[]);
 
 ssp(3) = axes('position',[.67 .6 .1 .07]); % Put subzoom
-b = bar(Pdisp_co(1050:1150,:),1, 'stacked', 'EdgeColor', 'none');
+b = bar(Pdisp_co,1, 'stacked', 'EdgeColor', 'none');
 axis tight
-set(gca,'xtick',[],'ytick',[]);
+%set(gca,'xtick',[],'ytick',[]);
+axis([1050 1100 0 4000])
+set(gca,'fontsize',5)
+xticks([1050 1100])
+%yticks([2000 4000])
+set(gca,'ytick',[]);
+
+
 
 %% Subplot Full Model data
 sp(3) = subplot(4,1,3);
@@ -133,7 +148,7 @@ for n=1:length(P)
 set(P(n),'facecolor',C(n,:));
 end
 set(gca,'fontsize',7)
-xlabel('Index of the element (min)')
+xlabel('t (min)')
 ylabel('Power [W]')
 t(4) = title('(d) Pattern Recognition');
 axis(axis_coord)
@@ -176,5 +191,7 @@ ssp(3).Position(1) = 0.7;
 subplot(sp(2))
 hold on;
 plot([570 610], [1370 800], '-', 'Color', [0.5 0.5 0.5])
-plot([900 900], [1370 800], '-', 'Color', [0.5 0.5 0.5])
+plot([900 900], [2000 800], '-', 'Color', [0.5 0.5 0.5])
 plot([1080 1130], [1000 1370], '-', 'Color', [0.5 0.5 0.5])
+
+ssp(2).Position(2) = 0.615;
