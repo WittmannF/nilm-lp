@@ -2,14 +2,14 @@
 # elimina todos os elementos da memória
 reset ;
 # muda ao modo modelo
-model NILM_LP_model_Q.mod;
+model 2_NILM_LP_model.mod;
 # data model: choose between NILM_LP_data_15s.dat and NILM_LP_data_system2.dat
-data NILM_LP_data_system2_Q.dat;
+data 3_NILM_LP_data.dat;
 # define CPLEX como solucionador ou solver
 option solver cplex;
 
 # soluciona o modelo e imprime
-include NILM_LP_head.inc; # Impressao de cabeçalhos
+include 4_1_NILM_LP_head.inc; # Impressao de cabeçalhos
 repeat{
 
 	printf "%2d\% working... \n", floor((disc_i+window)/card(TS)*100);
@@ -17,7 +17,7 @@ repeat{
 	let TS2 := disc_i .. Tf;
 	
 	solve;
-	include NILM_LP_mid.inc; # imprime meio	
+	include 4_2_NILM_LP_mid.inc; # imprime meio	
 	
 	# Comunication between windows
 	for {e in ESTADO} {
@@ -35,5 +35,5 @@ repeat{
 #solve;
 #include NILM_LP_mid.inc;
 	
-include NILM_LP_foot.inc; # Imprime rodapé de arquivos de dados
+include 4_3_NILM_LP_foot.inc; # Imprime rodapé de arquivos de dados
 display _total_solve_time;
