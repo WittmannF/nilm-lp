@@ -22,15 +22,32 @@ names = [f[:-4] for f in files]
 d = dict(zip(names,data))
 
 # Plot by size 
-
-size = 1000
-
-plt.plot(d['B1E'].TS.values[:size], d['B1E'].P.values[:size])
-plt.plot(d['B2E'].TS.values[:size], d['B2E'].P.values[:size])
+init = 0
+end = 5000
 
 # Sum all active power, except WHE 
 all_P = sum(v.P for (k,v) in d.iteritems() if k!='WHE')
+all_Q = sum(v.Q for (k,v) in d.iteritems() if k!='WHE')
 
-plt.plot(d['WHE'].P)
-plt.plot(all_P)
-plt.plot(d['WHE'].P-all_P)
+# Plot all appliances
+for appl in names:
+    plt.plot(d[appl].P[init:end])
+
+plt.legend(names)
+
+# Plot clusters of active and reactive power
+for appl in names:
+    if appl != 'WHE':
+        plt.plot(d[appl].P[init:end], d[appl].Q[init:end],'o', alpha=0.1)
+
+to_leg = [n for n in names if n!='WHE']
+to_leg.append('WHE Steps')
+
+# Get steps
+w = 5
+P_steps = all_P.values[init+w:end] - all_P.values[init:end-w]
+Q_steps = all_Q.values[init+w:end] - all_Q.values[init:end-w]
+
+# Plot steps
+plt.plot(abs(P_steps),abs(Q_steps),'o', alpha=0.1)
+plt.legend(to_leg)
