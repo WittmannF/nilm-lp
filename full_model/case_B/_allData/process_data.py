@@ -51,3 +51,9 @@ Q_steps = all_Q.values[init+w:end] - all_Q.values[init:end-w]
 # Plot steps
 plt.plot(abs(P_steps),abs(Q_steps),'o', alpha=0.1)
 plt.legend(to_leg)
+
+# TODO: Create ground truth data and export to csv
+# all_P.to_csv('ground_truth_P.csv')
+# all_Q.to_csv('ground_truth_Q.csv')
+
+# TODO: Create clustering algorithm to get the main states of each algorithm
