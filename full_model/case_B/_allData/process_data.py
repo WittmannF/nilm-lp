@@ -10,6 +10,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+# TODO: Get medians values
+def get_medians(X, y_pred):    
+    P = X[:,0]
+    Q = X[:,1]
+
+    medians_P = []
+    medians_Q = []
+    for idx in range(max(y_pred)+1):
+        medians_P.append(np.median([P[i] for i in range(len(y_pred)) if y_pred[i] == idx]))
+        medians_Q.append(np.median([Q[i] for i in range(len(y_pred)) if y_pred[i] == idx]))
+    
+    medians = np.transpose([medians_P, medians_Q])
+    return medians
+
+
 # Get all csv files from the current folder
 files = [f for f in os.listdir('.') if os.path.isfile(f) and f[-3:]=='csv' and 'ground_truth' not in f]
 
@@ -125,19 +140,77 @@ from sklearn.mixture import BayesianGaussianMixture
 colors = np.array([x for x in 'bgrcmykbgrcmykbgrcmykbgrcmyk'])
 colors = np.hstack([colors] * 20)
 
-## Test DBSCAN for one appliance
+## Test BGM for one appliance
 appl = 'BME'
+
+# Create vector with P and Q values and plot them
+P = d[appl].P[init:end].values
+Q = d[appl].Q[init:end].values
+X = np.transpose([P, Q])
+
 plt.plot(d[appl].P[init:end], d[appl].Q[init:end],'o', alpha=0.1)
 
-# Compute BGM
-X = np.transpose([d[appl].P[init:end].values, d[appl].Q[init:end].values])
-X = StandardScaler().fit_transform(X)
+# Normalize X
+sscl = StandardScaler().fit(X)
+X = sscl.transform(X)
+
+# Apply clusterer
 bgm = BayesianGaussianMixture(n_components=4, covariance_type='full', weight_concentration_prior_type='dirichlet_distribution', random_state=42).fit(X)
 y_pred = bgm.predict(X)
+
+# Plot clusters with X unnormalized
+X = sscl.inverse_transform(X)
 plt.figure()
 plt.scatter(X[:,0],X[:,1], color=colors[y_pred])
-means = bgm.means_
-plt.plot(means[:,0],means[:,1],'kx')
+means = sscl.inverse_transform(bgm.means_)
+medians = get_medians(X, y_pred)
+# plt.plot(means[:,0],means[:,1],'kx')
+plt.plot(medians[:,0],medians[:,1],'kx')
+
+
+# TODO: Compare mean with ground truth
+plt.figure()
+plt.plot(P)
+P_pred = means[y_pred][:,0]
+plt.plot(P_pred)
+
+plt.figure()
+Q_pred = means[y_pred][:,1]
+plt.plot(Q)
+plt.plot(Q_pred)
+
+# TODO: Compare median with ground truth
+plt.figure()
+plt.plot(P)
+P_pred = medians[y_pred][:,0]
+plt.plot(P_pred)
+
+plt.figure()
+Q_pred = medians[y_pred][:,1]
+plt.plot(Q)
+plt.plot(Q_pred)
+
+# TODO: Join close medians
+def join_medians(medians, min_va):
+    medians = None
+    return medians
+
+for i in range(len(medians)):
+    medians_P = medians[:,0]
+    for j in range(i,len(medians)):
+        print 'i is {}'.format(i)
+        print 'j is {}'.format(j)
+        print 'testing if {} is close to {}'.format(medians_P[i], medians_P[j])
+
+from itertools import combinations 
+medians_P = medians[:,0]
+list(combinations(medians_P, 2))
+
+
+medians = join_medians(medians, 10)
+
+
+
 
 ## Test BGM for all appliances
 delta = 30 # VA (minimum aparent power to be identified)
