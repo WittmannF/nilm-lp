@@ -1444,21 +1444,37 @@ param: TS:  Ptotal   Qtotal:=
 
 param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
 #                             [W] 	     [W]    [amostras] 
-        1        1    0      4606 	     413      25 # Dryer 1
-		2		 1	  1		  252	     413       5 # Dryer 2
-        3        2    0       751 	      34       5 # DishWasher 1
-        4        2    0       478  	       0      15 # DishWasher 2
-        5        2    0       136         34      15 # DishWasher 3
-        6        3    0       129 	       6      10 # Fridge
-		7		 4	  0		   37	      17      30 # Heatpump 1
-		8		 4	  0		 1807	     324      10 # Heatpump 2
-		9		 4    7      2435	     429      30 # Heatpump 3
-		10		 5	  0		 3442	     141      10 # Kitchenwall 1
-		11		 5	  0		 3305	     133      10 # Kitchenwall 1		
-		12		 5    0		 2796	     130      10 # Kitchenwall 2
-		13	     5    0		   44	      38      10 # Kitchenwall3
-		14		 6	  0		   38	      13      30 # TV entert2
-		15		 6	 14		  239	      31      30 # TV entert3
+        1        1    0       349 	       0      15 # B1E
+		2		 2	  0		   60	       4      15 # B2E
+        3        2    0       751 	      34      15 # B2E
+        4        3    0       478  	       0      15 # CDE
+        5        3    0       136         34      15 # CDE
+        6        3    0       129 	       6      15 # CWE
+		7		 4	  0		   37	      17      15 # CWE
+		8		 4	  0		 1807	     324      15 # CWE
+		9		 4    0      2435	     429      15 # DWE
+		10		 5	  0		 3442	     141      15 # DWE
+		11		 5	  0		 3305	     133      15 # DWE		
+		12		 5    0		 2796	     130      15 # EQE
+		13	     5    0		   44	      38      15 # FGE
+		14		 6	  0		   38	      13      15 # FGE
+		15		 6	  0		  239	      31      15 # FGE
+		16		 6	  0		  239	      31      15 # FRE
+		17		 6	  0		  239	      31      15 # FRE
+		18		 6	  0		  239	      31      15 # GRE
+		19		 6	  0		  239	      31      15 # HPE
+		21		 6	  0		  239	      31      15 # HPE
+		22		 6	  0		  239	      31      15 # HPE
+		23		 6	  0		  239	      31      15 # HTE
+		24		 6	  0		  239	      31      15 # OFE
+		25		 6	  0		  239	      31      15 # OFE
+		26		 6	  0		  239	      31      15 # OFE
+		27		 6	  0		  239	      31      15 # TVE
+		28		 6	  0		  239	      31      15 # TVE
+		29		 6	  0		  239	      31      15 # TVE
+		31		 6	  0		  239	      31      15 # WOE
+		32		 6	  0		  239	      31      15 # WOE
+		33		 6	  0		  239	      31      15 # WOE
 		;
 
 let numdisp := 6;
