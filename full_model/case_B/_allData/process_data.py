@@ -144,7 +144,7 @@ colors = np.array([x for x in 'bgrcmykbgrcmykbgrcmykbgrcmyk'])
 colors = np.hstack([colors] * 20)
 
 ## Test BGM for one appliance
-appl = 'HPE'
+appl = 'WHE'
 
 # Create vector with P and Q values and plot them
 P = d[appl].P[init:end].values
@@ -158,7 +158,7 @@ sscl = StandardScaler().fit(X)
 X = sscl.transform(X)
 
 # Apply clusterer
-bgm = BayesianGaussianMixture(n_components=4, covariance_type='full', weight_concentration_prior_type='dirichlet_distribution', random_state=42).fit(X)
+bgm = BayesianGaussianMixture(n_components=33, covariance_type='full', weight_concentration_prior_type='dirichlet_distribution', random_state=42).fit(X)
 y_pred = bgm.predict(X)
 
 # Plot clusters with X unnormalized
@@ -257,6 +257,7 @@ init = 0
 length = 7*24*60 # 10080 minutes = 1 week
 end = init + length
 
+ignore_appl = []
 for appl in names:
     # Create vector with P and Q values
     P = d[appl].P[init:end].values
@@ -267,6 +268,7 @@ for appl in names:
     # Normalize X
     if len(X) == 0:
         print 'No value lower than {} VA was found in {}'.format(delta, appl)
+        ignore_appl.append(appl)
         continue
     
     sscl = StandardScaler().fit(X)
@@ -290,7 +292,6 @@ for appl in names:
     print(medians)
     print '='*80
 
-    
 
 
 
