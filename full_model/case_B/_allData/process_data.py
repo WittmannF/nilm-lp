@@ -9,6 +9,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+from sklearn.preprocessing import StandardScaler
+from numpy import linalg as LA
+from itertools import combinations 
 
 # TODO: Get medians values
 def get_medians(X, y_pred):    
@@ -46,10 +49,12 @@ all_P = sum(v.P for (k,v) in d.items() if k!='WHE')
 all_Q = sum(v.Q for (k,v) in d.items() if k!='WHE')
 
 # Plot all appliances
+plt.figure()
 for appl in names:
-    plt.plot(d[appl].P[init:end])
+    if appl!='WHE':
+        plt.plot(d[appl].P[init:end])
 
-plt.legend(names)
+plt.legend([n for n in names if n!='WHE'])
 
 # Plot clusters of active and reactive power
 plt.figure()
@@ -81,8 +86,6 @@ end = 43200 # minutes = 1 month
 
 # Import clusterer
 from sklearn.cluster import DBSCAN
-from sklearn.preprocessing import StandardScaler
-from numpy import linalg as LA
 
 # Set list of colors
 colors = np.array([x for x in 'bgrcmykbgrcmykbgrcmykbgrcmyk'])
@@ -141,7 +144,7 @@ colors = np.array([x for x in 'bgrcmykbgrcmykbgrcmykbgrcmyk'])
 colors = np.hstack([colors] * 20)
 
 ## Test BGM for one appliance
-appl = 'BME'
+appl = 'HPE'
 
 # Create vector with P and Q values and plot them
 P = d[appl].P[init:end].values
@@ -202,18 +205,57 @@ for i in range(len(medians)):
         print 'j is {}'.format(j)
         print 'testing if {} is close to {}'.format(medians_P[i], medians_P[j])
 
-from itertools import combinations 
-medians_P = medians[:,0]
-list(combinations(medians_P, 2))
+min_va = 30
 
+comb = list(combinations(medians, 2))
 
-medians = join_medians(medians, 10)
+a = comb[0][0]
+b = comb[0][1]
 
+np.linalg.norm(a-b)
 
-
+med = []
+ignore_list = []
+for p in comb: # For each pair of points in the list of combinations
+    print '- Testing distance between {} and {}'.format(p[0], p[1])
+    dist = np.linalg.norm(p[0]-p[1]) # Get the distance between both points
+    print '-- Distance is {}'.format(dist)
+    if dist > min_va:
+        print '--- Distance is higher than {}'.format(min_va)
+        print '---- Lets append {} and {} if they are not in the list'.format(p[0],p[1])
+        if p[0] not in np.array(med):
+            med.append(p[0])
+            print '----- med now is {}'.format(med)
+        else:
+            print '----- {} is already in the list'.format(p[0])
+        
+        
+        if p[1] not in np.array(med):
+            med.append(p[1])
+            print '----- med now is {}'.format(med)
+        else:
+            print '----- {} is already in the list'.format(p[1])
+    else:
+        print '--- Distance is lower than {}, hence, get median of them'.format(min_va)
+        
+        p1 = p[0][0]
+        q1 = p[0][1]
+        
+        p2 = p[1][0]
+        q2 = p[1][1]
+        
+        merge_P = np.concatenate((P[P_pred == p1],P[P_pred == p2]))
+        merge_Q = np.concatenate((Q[Q_pred == q1],Q[Q_pred == q2]))
+        median_array = np.array([np.median(merge_P), np.median(merge_Q)])
+        med.append(median_array)
+        ignore_list.append(p[0])
+        ignore_list.append(p[1])
 
 ## Test BGM for all appliances
 delta = 30 # VA (minimum aparent power to be identified)
+init = 0
+length = 7*24*60 # 10080 minutes = 1 week
+end = init + length
 
 for appl in names:
     # Create vector with P and Q values
@@ -239,7 +281,14 @@ for appl in names:
     plt.figure()
     plt.scatter(X[:,0],X[:,1], color=colors[y_pred], alpha=0.5)
     means = sscl.inverse_transform(bgm.means_)
-    plt.plot(means[:,0],means[:,1],'kx')
+    #plt.plot(means[:,0],means[:,1],'kx')
+    medians = get_medians(X, y_pred)
+    plt.plot(medians[:,0],medians[:,1],'kx')
+    plt.title(appl)
+    
+    print 'Median P,Q center values for {} are:'.format(appl)
+    print(medians)
+    print '='*80
 
     
 
