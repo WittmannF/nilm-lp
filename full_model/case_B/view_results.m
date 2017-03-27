@@ -11,12 +11,16 @@ TS = X(:,1);
 Pdisp = X(:,2:end)*diag(ESTADO(:,2)); % Ignore index at X(:,1)
 Ptotal = X(:,2:end)*ESTADO(:,2);
 
-F = [1 1 0 0 0 0 0 0 0 0 0 0 0 0 0
-     0 0 1 1 1 0 0 0 0 0 0 0 0 0 0
-     0 0 0 0 0 1 0 0 0 0 0 0 0 0 0
-     0 0 0 0 0 0 1 1 1 0 0 0 0 0 0
-     0 0 0 0 0 0 0 0 0 1 1 1 1 0 0
-     0 0 0 0 0 0 0 0 0 0 0 0 0 1 1];
+% Make F-matrix
+states = [1 2 2 3 3 4 4 4 5 5 5 6 7 7];
+F = zeros(max(states), length(states));
+for i=1:length(states) % columns, from 1 to 14
+    for j=1:max(states) % lines, from 1 to 7
+        if j==states(i)
+            F(j,i) = 1;
+        end   
+    end
+end
  
 K = F*diag(ESTADO(:,2));
 Pdisp = X(:,2:end)*K';
@@ -95,6 +99,5 @@ TIE_hpe = round(sum(abs(y_true_hpe(1:1435) - y_pred_hpe))/sum(y_true_hpe)*100,1)
 TIE_woe = round(sum(abs(y_true_woe(1:1435) - y_pred_woe))/sum(y_true_woe)*100,1)
 
 TIE_tv = round(sum(abs(y_true_tv(1:1435) - y_pred_tv))/sum(y_true_tv)*100,1)
-
 
 
