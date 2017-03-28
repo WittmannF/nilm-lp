@@ -10112,12 +10112,12 @@ param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
 		27		13	  0		   38	      17       5 # TVE
 		28		13    0		  243	      32       5 # TVE
 		29		13	  0		  327	      31       5 # TVE
-		31		14	  0		   43	      38       5 # WOE
-		32		14	  0		  129	     121       5 # WOE
-		33		14	  0		 3340	     135       5 # WOE
+		30		14	  0		   43	      38       5 # WOE
+		31		14	  0		  129	     121       5 # WOE
+		32		14	  0		 3340	     135       5 # WOE
 		;
 
-let numdisp := 14;
+let numdisp := 32;
 let disc_i :=1;
 let window :=10;
 let TH := 30;

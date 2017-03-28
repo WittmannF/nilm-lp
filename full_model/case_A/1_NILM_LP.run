@@ -8,6 +8,8 @@ data 3_NILM_LP_data.dat;
 # define CPLEX como solucionador ou solver
 option solver cplexamp;
 # option cplex_options "mipdisplay=4 mipgap=0.01"
+option cplex_options 'mipdisplay=4 mipgap=0.01 nodefile=3';
+
 
 # soluciona o modelo e imprime
 include 4_1_NILM_LP_head.inc; # Impressao de cabeçalhos
