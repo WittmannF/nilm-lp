@@ -54,6 +54,10 @@ subject to evitar_sobreposicao {t in TS2, d in 1..numdisp}:
 subject to set_zero {t in TS2, e in ESTADO : Ptotal[t] < TH}:
 	X[e,t] = 0;
 
+# Define states to zero if the current measurement is lower than a given state
+subject to set_zero_2 {t in TS2, e in ESTADO : Ptotal[t] < Pdisp[e]}:
+        X[e,t] = 0;
+
 # Variaveis para armazenar mudança de estados
 subject to calculo_ligado {t in TS2, e in ESTADO : t > disc_i}:
 	X[e,t] - X[e,t-1] = up[e,t] - down[e,t];
