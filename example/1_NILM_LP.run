@@ -3,11 +3,10 @@
 reset ;
 # muda ao modo modelo
 model 2_NILM_LP_model.mod;
-# data model: choose between NILM_LP_data_15s.dat and NILM_LP_data_system2.dat
-data 3_NILM_LP_data_15s.dat;
+# muda ao modo de dados
+data 3_NILM_LP_dados.dat;
 # define CPLEX como solucionador ou solver
 option solver cplex;
-# option cplex_options "mipdisplay=4 mipgap=0.01"
 option cplex_options 'mipdisplay=4 mipgap=0.05 nodefile=3';
 
 
@@ -15,7 +14,7 @@ option cplex_options 'mipdisplay=4 mipgap=0.05 nodefile=3';
 include 4_1_NILM_LP_head.inc; # Impressao de cabeçalhos
 repeat{
 
-	printf "%2d\% working... \n", floor((disc_i+window)/card(TS)*100);
+	printf "---- %2d\% concluido... ---- \n", floor((disc_i+window)/card(TS)*100);
 	let Tf := disc_i + window;
 	let TS2 := disc_i .. Tf;
 	

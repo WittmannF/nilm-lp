@@ -1,20 +1,20 @@
 ## definicao dos conjuntos e parametros
-set ESTADO; 				# Conjunto de estados
-set TS; 					# Conjunto de discretizações total
-set TS2;					# Conjunto de discretizações da janela
+set ESTADO; 				    # Conjunto de estados
+set TS; 					    # Conjunto de discretizações total
+set TS2;					    # Conjunto de discretizações da janela
 							
-param disc_i; 				# Discretizacao inicial
-param window; 				# Tamanho da janela
-param disp{ESTADO};			# ID do dispositivo
-param ant{ESTADO};			# Index do Estado anterior
-param Xprev{ESTADO};		# Estado X anterior
-param Pdisp{ESTADO};		# Potência Ativa dos estados
-# param Qdisp{ESTADO};		# Potência reativa dos estados
-param mindisc{ESTADO};		# Número mínimo de discretizações
-param numdisp;				# Número de dispositivos
-param Ptotal{TS};			# Potência total da leitura do medidor
-# param Qtotal{TS};			# Potência total da leitura do medidor
-param TH;					# Threshold de potência
+param disc_i; 				    # Discretizacao inicial
+param window; 			     	# Tamanho da janela
+param disp{ESTADO};			    # ID do dispositivo
+param ant{ESTADO};			    # Index do Estado anterior
+param Xprev{ESTADO};		    # Estado X anterior
+param Pdisp{ESTADO};		    # Potência Ativa dos estados
+# param Qdisp{ESTADO};		    # Potência reativa dos estados
+param mindisc{ESTADO};		    # Número mínimo de discretizações
+param numdisp;				    # Número de dispositivos
+param Ptotal{TS};			    # Potência total da leitura do medidor
+# param Qtotal{TS};			    # Potência total da leitura do medidor
+param TH;					    # Threshold de potência
 param G{ESTADO} default 0;		# Initial online time
 param Soma_X{ESTADO} default 0;	# Somatoria dos estados no tempo final
 param Tf;					    # Tempo final da janela
@@ -66,7 +66,7 @@ subject to set_zero {t in TS2, e in ESTADO : Ptotal[t] < TH}:
 subject to calculo_ligado {t in TS2, e in ESTADO : t > disc_i}:
 	X[e,t] - X[e,t-1] = up[e,t] - down[e,t];
 
-subject to impedir_igualdade {t in TS2, e in ESTADO}: #impedir que ua e up sejam iguais a 1 simultaneamente
+subject to impedir_igualdade {t in TS2, e in ESTADO}: 
 	up[e,t] + down[e,t] <= 1; 
 
 subject to variavel_inicial {e in ESTADO, t in TS2: t>1 and t = disc_i}:
