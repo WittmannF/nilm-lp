@@ -38,14 +38,22 @@ Pdisp = X(:,2:end)*K';
 %% Subplot Ground Truth Data
 subplot(2,1,1);
 bar(time, [refr wash stove], 'stacked')
-legend('Refr','Washing Machine','Stove')
-xlabel('# of Samples')
-ylabel('Power [W]')
+legend('Geladeira','Máquina de lavar','Forno elétrico')
+xlabel('t (min)')
+ylabel('Potência Ativa [W]')
 title('Dados Originais')
 
 %% Subplot com resultados
 subplot(2,1,2);
 bar(TS, Pdisp, 1,'stacked');
-xlabel('t (min)')
+xlabel('Amostra (delta = 15s)')
 ylabel('Active Power [W]')
-t(3) = title('Full Model');
+title('Full Model');
+
+%% Subplot entrada do modelo
+%subplot(2,1,2);
+%plot(time, [refr+wash+stove]);
+%xlabel('Amostra (delta = 15s)')
+%ylabel('Potência Ativa [W]')
+%title('Entrada do modelo');
+
