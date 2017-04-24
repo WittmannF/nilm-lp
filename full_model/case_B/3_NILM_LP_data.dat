@@ -10137,7 +10137,11 @@ param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
 		15		 6	 14		  239	      31      30 # TV entert3
 		;
 
+<<<<<<< HEAD
 let numdisp := 6;
+=======
+let numdisp := 14;
+>>>>>>> f59500c40cd29421cf3c43b8f9dea4db5559fa71
 let disc_i :=1;
 let window :=40;
 let TH := 30;
