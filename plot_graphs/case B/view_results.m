@@ -124,3 +124,15 @@ for y_true = [CDE_P FGE_P HPE_P]
 end
 
 %% Visualize results
+i = 1;
+y_true = DATA(:,i);
+y_pred = Pdisp(:,i);
+figure,
+plot(y_true);
+hold on;
+plot(y_pred);
+
+TEE = round(abs(sum(y_true) - sum(y_pred))/sum(y_true)*100,1)
+TIE = round(sum(abs(y_true(1:length(y_pred)) - y_pred))/sum(y_true)*100,1)
+
+
