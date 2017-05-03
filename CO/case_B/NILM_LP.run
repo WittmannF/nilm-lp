@@ -7,6 +7,7 @@ model NILM_LP_model_Q.mod;
 data NILM_LP_data_system2_Q.dat;
 # define CPLEX como solucionador ou solver
 option solver cplex;
+option cplex_options 'mipdisplay=4 mipgap=0.01';
 
 # soluciona o modelo e imprime
 include NILM_LP_head.inc; # Impressao de cabeçalhos
