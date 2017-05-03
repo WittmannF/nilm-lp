@@ -123,16 +123,21 @@ for y_true = [CDE_P FGE_P HPE_P]
     i=i+1;
 end
 
+
 %% Visualize results
-i = 1;
+app_list = ['BME';'CDE';'DWE';'FGE';'FRE';'HPE';'TVE'];
+
+i = 3;
 y_true = DATA(:,i);
-y_pred = Pdisp(:,i);
+y_pred = Pdisp_co(:,i);
+
+disp(['================ ',app_list(i,:),' ================']);
 figure,
 plot(y_true);
 hold on;
 plot(y_pred);
+title(app_list(i,:));
 
 TEE = round(abs(sum(y_true) - sum(y_pred))/sum(y_true)*100,1)
 TIE = round(sum(abs(y_true(1:length(y_pred)) - y_pred))/sum(y_true)*100,1)
-
 
