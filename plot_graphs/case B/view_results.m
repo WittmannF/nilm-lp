@@ -12,7 +12,7 @@ Pdisp = X(:,2:end)*diag(ESTADO(:,2)); % Ignore index at X(:,1)
 Ptotal = X(:,2:end)*ESTADO(:,2);
 
 % Make F-matrix
-states = [1 1 2 2 3 3 3 4 5 5 5 6 6 6 7 7];
+states = [1 1 2 2 3 3 4 5 6 6 6 7 7];
 F = zeros(max(states), length(states));
 for i=1:length(states) % columns, from 1 to 14
     for j=1:max(states) % lines, from 1 to 7
@@ -122,3 +122,5 @@ for y_true = [CDE_P FGE_P HPE_P]
     
     i=i+1;
 end
+
+%% Visualize results
