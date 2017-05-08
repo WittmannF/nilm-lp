@@ -1444,7 +1444,7 @@ param: TS:  Ptotal   Qtotal:=
 
 param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
 #                             [W] 	     [W]    [amostras] 
-        1        1    0      4606 	     413      50 # CDE
+        1        1    0      4606 	     413      20 # CDE
 	2	 1    1       252	     413       5 # CDE
         3        2    0       751 	      34       5 # DishWasher 1
         4        2    0       478  	       0      15 # DishWasher 2
