@@ -1449,7 +1449,7 @@ param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
         3        2    0       751 	      34       5 # DishWasher 1
         4        2    0       478  	       0      15 # DishWasher 2
         5        2    0       136             34      15 # DishWasher 3
-        6        3    0       129 	       6       7 # Fridge
+        6        3    0       129 	       6       7 # FGE
 	7	 4    0	       37	      17      30 # HPE
 	8	 4    0	     1807	     324      10 # HPE
 	9	 4    7      2435	     429      30 # HPE
@@ -1462,5 +1462,5 @@ param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
 
 let numdisp := 6;
 let disc_i :=1;
-let window :=65;
+let window :=60;
 let TH := 30;
