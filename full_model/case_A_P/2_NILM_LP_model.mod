@@ -22,13 +22,12 @@ param Tf;					# Tempo final da janela
 ## Definicao das variaveis
 var X{ESTADO,TS2} binary;   # Estado X do dispositivo e in ESTADO para o instante de tempo t in TS2
 var DELTA_P{TS2};				# Erro para o instante de tempo t in TS2
-var DELTA_Q{TS2};				# Erro para o instante de tempo t in TS2
 var up{ESTADO,TS2} binary;  # Binário que indica que o estado e in ESTADO foi ativado no instante t in TS2
 var down{ESTADO,TS2} binary;  # Binário que indica que o estado e in ESTADO foi desativado no instante t in TS2
 
 ## Definicao da funcao objetivo
 minimize erro_quadratico: 
-	sum{t in TS2} (DELTA_P[t] + DELTA_Q[t]);
+	sum{t in TS2} (DELTA_P[t]);
  
 ## Definicao das restricoes
 
@@ -38,13 +37,6 @@ subject to diferenca_combinatoria_1 {t in TS2}:
 
 subject to diferenca_combinatoria_2 {t in TS2}:
 	Ptotal[t] - sum{e in ESTADO} (Pdisp[e]*X[e,t]) >= -DELTA_P[t];
-
-# Erro absoluto Q
-subject to diferenca_combinatoria_3 {t in TS2}:
-	Qtotal[t] - sum{e in ESTADO} (Qdisp[e]*X[e,t]) <= DELTA_Q[t];
-
-subject to diferenca_combinatoria_4 {t in TS2}:
-	Qtotal[t] - sum{e in ESTADO} (Qdisp[e]*X[e,t]) >= -DELTA_Q[t];
 
 # Evitar que múltiplos estados da mesma carga sejam ativados  
 subject to evitar_sobreposicao {t in TS2, d in 1..numdisp}:
