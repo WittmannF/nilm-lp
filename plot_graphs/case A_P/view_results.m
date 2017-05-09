@@ -22,21 +22,17 @@ for i=1:length(states) % columns, from 1 to 14
 end
  
 K = F*diag(ESTADO(:,2));
-Pdisp = X(:,2:end)*K';
 
 %% Read ground truth data
 app_list = ['CDE';'DWE';'FGE';'HPE';'WOE';'TVE'];
 DATA = csvread('z_ground_truth.csv');
 time = 1:length(DATA);
-%BME_P = DATA(:,1);
-%CDE_P = DATA(:,2);
-%DWE_P = DATA(:,3);
-%FGE_P = DATA(:,4);
-%FRE_P = DATA(:,5);
-%HPE_P = DATA(:,6);
-%TVE_P = DATA(:,7);
-%ALL_P = DATA(:,8);
-
+%CDE_P = DATA(:,1);
+%DWE_P = DATA(:,2);
+%FGE_P = DATA(:,3);
+%HPE_P = DATA(:,4);
+%WOE_P = DATA(:,5);
+%TVE_P = DATA(:,6);
 
 %% Subplot Ground Truth Data
 sp(1) = subplot(4,1,1);
