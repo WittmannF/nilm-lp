@@ -10137,23 +10137,22 @@ param:  TS:        Ptotal     Qtotal:=
 #		15		 6	  0		  239	      31      30 # TVE
 #		;
 
-param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
-#                             [W] 	     [W]    [amostras] 
+param:  ESTADO: disp  ant   Pdisp 	Qdisp    mindisc :=
+#                             [W] 	 [W]    [amostras] 
         1        1    0       333         26      15 # BME
         2        1    0       407         26       5 # BME
-        3        2    0      4569 	     412      25 # CDE
-		4		 2	  3		  247	     407       5 # CDE
-        5        3    0       751 	      34       5 # DWE
-        6        3    0       478  	       0      15 # DWE
-        7        4    0       129 	       8       7 # FGE
-		8        5    0       105		  26	  20 # FRE
-        9        5    9       113         31      20 # FRE
-        10       5    9       369          8       7 # FRE
-		11	     6	  0		   37	      17      30 # HPE
-		12	     6	  0		 1807	     324      10 # HPE
-		13		 6    0      2435	     429      30 # HPE
-		14		 7	  0		   38	      13      30 # TVE
-		15		 7	  0		  239	      31      30 # TVE		
+        3        2    0      4569 	 412      25 # CDE
+        4        2    3	      247	 407       5 # CDE
+        5        3    0       751 	  34       5 # DWE
+        6        3    0       478  	   0      15 # DWE
+        7        4    0       129 	   8       7 # FGE
+	8        5    0       105	  26	  20 # FRE
+        9        5    9       369          8       7 # FRE
+	10	 6    0	       37	  17      30 # HPE
+	11	 6    0	     1807	 324      10 # HPE
+	12	 6    0      2435	 429      30 # HPE
+	13	 7    0	       38	  13      30 # TVE
+	14	 7    0	      239	  31      30 # TVE		
 ;
 
 
