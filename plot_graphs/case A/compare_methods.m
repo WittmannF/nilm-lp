@@ -13,15 +13,19 @@ TS = X(:,1);
 Pdisp = X(:,2:end)*diag(ESTADO(:,2)); % Ignore index at X(:,1)
 Ptotal = X(:,2:end)*ESTADO(:,2);
 
-F = [1 1 0 0 0 0 0 0 0 0 0 0 0 0 0
-     0 0 1 1 1 0 0 0 0 0 0 0 0 0 0
-     0 0 0 0 0 1 0 0 0 0 0 0 0 0 0
-     0 0 0 0 0 0 1 1 1 0 0 0 0 0 0
-     0 0 0 0 0 0 0 0 0 1 1 1 1 0 0
-     0 0 0 0 0 0 0 0 0 0 0 0 0 1 1];
+% Make F-matrix
+states = [1 1 2 2 2 3 4 4 4 5 5 5 6 6];
+F = zeros(max(states), length(states));
+for i=1:length(states) % columns, from 1 to 14
+    for j=1:max(states) % lines, from 1 to 7
+        if j==states(i)
+            F(j,i) = 1;
+        end   
+    end
+end
  
 K = F*diag(ESTADO(:,2));
-Pdisp = X(:,2:end)*K';
+
 
 %% Read results from AMPL for CO
 X_co = x_co;
@@ -199,43 +203,56 @@ ssp(2).Position(2) = 0.615;
 
 %% Metrics for the FULL model
 
+app_list = ['CDE';'DWE';'FGE';'HPE';'WOE';'TVE'];
+disp(['================ Results for the FULL model ================']);
+i = 1;
+for y_true = DATA(:,1:6)
+    y_pred = Pdisp(:,i);
+    disp(['================ ',app_list(i,:),' ================']);
+    TEE = round(abs(sum(y_true) - sum(y_pred))/sum(y_true)*100,1)
+    TIE = round(sum(abs(y_true(1:length(y_pred)) - y_pred))/sum(y_true)*100,1)
+    
+    i=i+1;
+end
+
+
 % TEE = \dfrac{|\sum_{t}{y_i(t)} - \sum_{t}{\hat{y}_i(t)}|}{\sum_{t} { y_i(t)}}
 y_true_cde = CDE_P;
 y_pred_cde = Pdisp(:,1);
-TEE_cde = round(abs(sum(y_true_cde) - sum(y_pred_cde))/sum(y_true_cde)*100,1);
+TEE_cde = round(abs(sum(y_true_cde) - sum(y_pred_cde))/sum(y_true_cde)*100,1)
 
 y_true_dwe = DWE_P;
 y_pred_dwe = Pdisp(:,2);
-TEE_dwe = round(abs(sum(y_true_dwe) - sum(y_pred_dwe))/sum(y_true_dwe)*100,1);
+TEE_dwe = round(abs(sum(y_true_dwe) - sum(y_pred_dwe))/sum(y_true_dwe)*100,1)
 
 y_true_fge = FGE_P;
 y_pred_fge = Pdisp(:,3);
-TEE_fge = round(abs(sum(y_true_fge) - sum(y_pred_fge))/sum(y_true_fge)*100,1);
+TEE_fge = round(abs(sum(y_true_fge) - sum(y_pred_fge))/sum(y_true_fge)*100,1)
 
 y_true_hpe = HPE_P;
 y_pred_hpe = Pdisp(:,4);
-TEE_hpe = round(abs(sum(y_true_hpe) - sum(y_pred_hpe))/sum(y_true_hpe)*100,1);
+TEE_hpe = round(abs(sum(y_true_hpe) - sum(y_pred_hpe))/sum(y_true_hpe)*100,1)
 
 y_true_woe = WOE_P;
 y_pred_woe = Pdisp(:,5);
-TEE_woe = round(abs(sum(y_true_woe) - sum(y_pred_woe))/sum(y_true_woe)*100,1);
+TEE_woe = round(abs(sum(y_true_woe) - sum(y_pred_woe))/sum(y_true_woe)*100,1)
 
 y_true_tv = TV_P;
 y_pred_tv = Pdisp(:,6);
-TEE_tv = round(abs(sum(y_true_tv) - sum(y_pred_tv))/sum(y_true_tv)*100,1);
+TEE_tv = round(abs(sum(y_true_tv) - sum(y_pred_tv))/sum(y_true_tv)*100,1)
 
 % TIE = \dfrac{\sum_{t} { |y_i(t) - \hat{y}_i(t)|}}{\sum_{t} { y_i(t)}}
-TIE_cde = round(sum(abs(y_true_cde(1:1435) - y_pred_cde))/sum(y_true_cde)*100,1); % adjust length to match with the prediction
+TIE_cde = round(sum(abs(y_true_cde(1:length(y_pred_cde)) - y_pred_cde))/sum(y_true_cde)*100,1) % adjust length to match with the prediction
 
-TIE_dwe = round(sum(abs(y_true_dwe(1:1435) - y_pred_dwe))/sum(y_true_dwe)*100,1);
+TIE_dwe = round(sum(abs(y_true_dwe(1:length(y_pred_cde)) - y_pred_dwe))/sum(y_true_dwe)*100,1)
 
-TIE_fge = round(sum(abs(y_true_fge(1:1435) - y_pred_fge))/sum(y_true_fge)*100,1);
+TIE_fge = round(sum(abs(y_true_fge(1:length(y_pred_cde)) - y_pred_fge))/sum(y_true_fge)*100,1)
 
-TIE_hpe = round(sum(abs(y_true_hpe(1:1435) - y_pred_hpe))/sum(y_true_hpe)*100,1);
+TIE_hpe = round(sum(abs(y_true_hpe(1:length(y_pred_cde)) - y_pred_hpe))/sum(y_true_hpe)*100,1)
 
-TIE_woe = round(sum(abs(y_true_woe(1:1435) - y_pred_woe))/sum(y_true_woe)*100,1);
+TIE_woe = round(sum(abs(y_true_woe(1:length(y_pred_cde)) - y_pred_woe))/sum(y_true_woe)*100,1)
 
-TIE_tv = round(sum(abs(y_true_tv(1:1435) - y_pred_tv))/sum(y_true_tv)*100,1);
+TIE_tv = round(sum(abs(y_true_tv(1:length(y_pred_cde)) - y_pred_tv))/sum(y_true_tv)*100,1)
 
 %% Metrics for CO
 
