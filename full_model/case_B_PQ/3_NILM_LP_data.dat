@@ -1447,7 +1447,7 @@ param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
         1        1    0      4606 	     413      25 # CDE
 	2	 1    1       252	     413       5 # CDE
         3        2    0       751 	      34       5 # DWE
-        4        2    0       478  	       0      15 # DWE
+        4        2    3       478  	       4      15 # DWE
         5        2    0       136             34      15 # DWE
         6        3    0       129 	       6       7 # FGE
 	7	 4    0	       37	      17      30 # HPE
