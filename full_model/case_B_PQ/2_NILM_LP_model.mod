@@ -28,7 +28,7 @@ var down{ESTADO,TS2} binary;  # Binário que indica que o estado e in ESTADO foi
 
 ## Definicao da funcao objetivo
 minimize erro_quadratico: 
-	sum{t in TS2} (2*DELTA_P[t] + DELTA_Q[t]);
+	sum{t in TS2} (DELTA_P[t] + DELTA_Q[t]);
  
 ## Definicao das restricoes
 
