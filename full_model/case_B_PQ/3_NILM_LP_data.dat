@@ -1456,9 +1456,9 @@ param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
 	10	 5    0	     3445	     141       8 # Kitchenwall 1
 	11	 5    0	     3305	     133       3 # Kitchenwall 1		
 	12	 5    0	     2796	     130       2 # Kitchenwall 2
-	13       5    0       127  	      38       2 # Kitchenwall 3
-	14	 6    0	       38	      13      30 # TV entert2
-	15	 6   14	      239	      31      30 # TV entert3
+	#13       5    0       127  	      38       2 # Kitchenwall 3
+	13	 6    0	       38	      13      30 # TV entert2
+	14	 6   14	      239	      31      30 # TV entert3
 ;
 
 
