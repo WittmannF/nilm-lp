@@ -1457,7 +1457,7 @@ param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
 	11	 5    0	     3305	     133       5 # WOE		
 	12	 5    0	     2796	     130       1 # WOE
 	13	 6    0	       38	      13      30 # TVE
-	14	 6    13      239	      31      30 # TVE
+	14	 6    0      239	      31      30 # TVE
 		;
 
 let numdisp := 6;
