@@ -12,7 +12,7 @@ Pdisp = X(:,2:end)*diag(ESTADO(:,2)); % Ignore index at X(:,1)
 Ptotal = X(:,2:end)*ESTADO(:,2);
 
 % Make F-matrix
-states = [1 1 2 2 3 3 3 4 5 5 5 6 6 6 7 7];
+states = [1 1 2 2 3 3 4 5 6 6 6 7 7];
 F = zeros(max(states), length(states));
 for i=1:length(states) % columns, from 1 to 14
     for j=1:max(states) % lines, from 1 to 7
@@ -58,6 +58,29 @@ t(3) = title('Full Model');
 
 %% Metrics for the FULL model
 i = 1;
+TEE_avg = 0;
+TIE_avg = 0;
+n_app = length(Pdisp(1,:));
+for y_true = DATA(:,1:7)
+    y_pred = Pdisp(:,i);
+    disp(['================ ',app_list(i,:),' ================']);
+    TEE = round(abs(sum(y_true) - sum(y_pred))/sum(y_true)*100,1)
+    TIE = round(sum(abs(y_true(1:length(y_pred)) - y_pred))/sum(y_true)*100,1)
+    
+    TEE_avg = TEE_avg + TEE/n_app;
+    TIE_avg = TIE_avg + TIE/n_app;
+    
+    i=i+1;
+end
+
+disp(['================ Average ================']);
+TEE_avg
+TIE_avg
+
+ 
+
+%% Metrics for the FULL model
+i = 1;
 for y_true = DATA(:,1:7)
     y_pred = Pdisp(:,i);
     disp(['================ ',app_list(i,:),' ================']);
@@ -66,4 +89,5 @@ for y_true = DATA(:,1:7)
     
     i=i+1;
 end
+
  
