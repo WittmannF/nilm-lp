@@ -1,0 +1,40 @@
+###############
+# elimina todos os elementos da memória
+reset ;
+# muda ao modo modelo
+model 2_NILM_LP_model.mod;
+# data model: choose between NILM_LP_data_15s.dat and NILM_LP_data_system2.dat
+data 3_NILM_LP_data.dat;
+# define CPLEX como solucionador ou solver
+option solver cplex; # cplex;
+option cplex_options 'mipdisplay=4 mipgap=0.02 nodefile=3';
+
+# soluciona o modelo e imprime
+include 4_1_NILM_LP_head.inc; # Impressao de cabeçalhos
+repeat{
+
+	printf "%2d\% working... \n", floor((disc_i+window)/card(TS)*100);
+	let Tf := disc_i + window;
+	let TS2 := disc_i .. Tf;
+	
+	solve;
+	include 4_2_NILM_LP_mid.inc; # imprime meio	
+	
+	# Comunication between windows
+	for {e in ESTADO} {
+		let Xprev[e] := X[e,Tf];
+		let Soma_X[e] := sum{t in (Tf - mindisc[e] + 2) .. Tf}(X[e,t]);
+		let G[e] := min(disc_i + window, (mindisc[e] - Soma_X[e])*Xprev[e]);
+	}
+	let disc_i := disc_i + window + 1;
+	
+
+} while disc_i + window < card(TS);
+
+# Finalizar janela 	
+#let TS2 := disc_i .. card(TS);
+#solve;
+#include NILM_LP_mid.inc;
+	
+include 4_3_NILM_LP_foot.inc; # Imprime rodapé de arquivos de dados
+display _total_solve_time;
