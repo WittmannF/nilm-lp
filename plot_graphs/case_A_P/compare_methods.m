@@ -59,6 +59,7 @@ hold on
 P = bar(0); % Additional element in the legend for unknown loads
 set(P(1),'facecolor',[0.5 0.5 0.5])
 set(P(1),'facecolor',[0.5 0.5 0.5])
+L = legend('CDE','DWE','FGE','HPE','WOE',' TVE','Unkn');
 ylabel(sprintf('(a)\nPower [W]'))
 t(1) = title('(a) Ground Truth Data');
 axis(axis_coord)

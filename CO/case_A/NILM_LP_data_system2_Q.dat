@@ -1444,24 +1444,25 @@ param: TS:  Ptotal   Qtotal:=
 
 param:  ESTADO: disp  ant   Pdisp 	   Qdisp    mindisc :=
 #                             [W] 	     [W]    [amostras] 
-        1        1    0      4606 	     413      25 # Dryer 1
-		2		 1	  1		  252	     413       5 # Dryer 2
-        3        2    0       751 	      34       5 # DishWasher 1
-        4        2    0       478  	       0      15 # DishWasher 2
-        5        2    0       136         34      15 # DishWasher 3
-        6        3    0       129 	       6      10 # Fridge
-		7		 4	  0		   37	      17      30 # Heatpump 1
-		8		 4	  0		 1807	     324      10 # Heatpump 2
-		9		 4    7      2435	     429      30 # Heatpump 3
-		10		 5	  0		 3442	     141      10 # Kitchenwall 1
-		11		 5	  0		 3305	     133      10 # Kitchenwall 1		
-		12		 5    0		 2796	     130      10 # Kitchenwall 2
-		13	     5    0		   44	      38      10 # Kitchenwall3
-		14		 6	  0		   38	      13      30 # TV entert2
-		15		 6	 14		  239	      31      30 # TV entert3
-		;
+        1        1    0      4606 	     413      20 # CDE
+	2	 1    1       252	     413       5 # CDE
+        3        2    0       751 	      34       5 # DWE
+        4        2    0       478  	       0      15 # DWE
+        5        2    0       136             34      15 # DWE
+        6        3    0       129 	       6       7 # FGE
+	7	 4    0	       37	      17      30 # HPE
+	8	 4    0	     1807	     324      10 # HPE
+	9	 4    7      2435	     429      30 # HPE
+	10	 5    0	     3442	     141       5 # WOE
+	11	 5    0	     3305	     133       5 # WOE		
+	12	 5    0	     2796	     130       1 # WOE
+	13	 6    0	       38	      13      30 # TVE
+	14	 6    0       239	      31      30 # TVE
+;
+
+
 
 let numdisp := 6;
 let disc_i :=1;
-let window :=40;
+let window :=60;
 let TH := 30;
