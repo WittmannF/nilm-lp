@@ -25,6 +25,7 @@ var DELTA_P{TS2};				# Erro para o instante de tempo t in TS2
 # var DELTA_Q{TS2};				# Erro para o instante de tempo t in TS2
 var up{ESTADO,TS2} binary;      # Binário que indica que o estado e in ESTADO foi ativado no instante t in TS2
 var down{ESTADO,TS2} binary;    # Binário que indica que o estado e in ESTADO foi desativado no instante t in TS2
+var w{TS2};                     # Erro para alocacao de cargas desconhecidas utilizando degrais
 
 ## Funcao objetivo considerando apenas a potencia ativa
 minimize erro_quadratico: 
@@ -38,10 +39,10 @@ minimize erro_quadratico:
 
 # Erro absoluto P
 subject to diferenca_combinatoria_1 {t in TS2}:
-	Ptotal[t] - sum{e in ESTADO} (Pdisp[e]*X[e,t]) <= DELTA_P[t];
+	Ptotal[t] - sum{e in ESTADO} (Pdisp[e]*X[e,t] - w[t]) <= DELTA_P[t];
 
 subject to diferenca_combinatoria_2 {t in TS2}:
-	Ptotal[t] - sum{e in ESTADO} (Pdisp[e]*X[e,t]) >= -DELTA_P[t];
+	Ptotal[t] - sum{e in ESTADO} (Pdisp[e]*X[e,t] - w[t]) >= -DELTA_P[t];
 
 # Erro absoluto Q
 #subject to diferenca_combinatoria_3 {t in TS2}:
@@ -49,6 +50,10 @@ subject to diferenca_combinatoria_2 {t in TS2}:
 
 #subject to diferenca_combinatoria_4 {t in TS2}:
 #	Qtotal[t] - sum{e in ESTADO} (Qdisp[e]*X[e,t]) >= -DELTA_Q[t];
+
+# Inclusao de dual da programacao bi-nivel
+subject to restricao_dual {t in TS2: t>disc_i}:
+        w[t] = Ptotal[t] - Ptotal[t-1] - sum{e in ESTADO} ((X[e,t] - X[e,t-1])*Pdisp[e]);
 
 # Evitar que múltiplos estados da mesma carga sejam ativados  
 subject to evitar_sobreposicao {t in TS2, d in 1..numdisp}:
