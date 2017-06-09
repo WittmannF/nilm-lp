@@ -39,10 +39,10 @@ minimize erro_quadratico:
 
 # Erro absoluto P
 subject to diferenca_combinatoria_1 {t in TS2}:
-	Ptotal[t] - sum{e in ESTADO} (Pdisp[e]*X[e,t] - w[t]) <= DELTA_P[t];
+	Ptotal[t] - sum{e in ESTADO} (Pdisp[e]*X[e,t] + w[t]) <= DELTA_P[t];
 
 subject to diferenca_combinatoria_2 {t in TS2}:
-	Ptotal[t] - sum{e in ESTADO} (Pdisp[e]*X[e,t] - w[t]) >= -DELTA_P[t];
+	Ptotal[t] - sum{e in ESTADO} (Pdisp[e]*X[e,t] + w[t]) >= -DELTA_P[t];
 
 # Erro absoluto Q
 #subject to diferenca_combinatoria_3 {t in TS2}:
