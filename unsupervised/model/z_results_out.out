@@ -1,0 +1,186 @@
+---- 25% concluido... ---- 
+CPLEX 12.7.1.0: mipdisplay=4
+mipgap=0.05
+nodefile=3
+Found incumbent of value 40721.100000 after 0.00 sec. (0.03 ticks)
+MIP Presolve eliminated 28 rows and 28 columns.
+MIP Presolve modified 1359 coefficients.
+Reduced MIP has 1061 rows, 938 columns, and 8471 nonzeros.
+Reduced MIP has 805 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Probing time = 0.00 sec. (0.52 ticks)
+MIP Presolve modified 311 coefficients.
+Reduced MIP has 1061 rows, 938 columns, and 8471 nonzeros.
+Reduced MIP has 805 binaries, 1 generals, 0 SOSs, and 0 indicators.
+Probing time = 0.00 sec. (0.51 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.01 sec. (10.73 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                        40721.1000   -39289.4200           196.48%
+Found incumbent of value 40721.100000 after 0.04 sec. (23.57 ticks)
+      0     0     8664.1568   123    40721.1000     8664.1568      683   78.72%
+      0     0    17007.8467     4    40721.1000     Cuts: 284      838   58.23%
+*     0+    0                        17009.4000    17007.8467             0.01%
+Found incumbent of value 17009.400000 after 0.07 sec. (37.33 ticks)
+
+Flow cuts applied:  91
+Mixed integer rounding cuts applied:  94
+Gomory fractional cuts applied:  95
+
+Root node processing (before b&c):
+  Real time             =    0.11 sec. (37.44 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.11 sec. (37.44 ticks)
+CPLEX 12.7.1.0: optimal integer solution within mipgap or absmipgap; objective 17009.4
+838 MIP simplex iterations
+0 branch-and-bound nodes
+absmipgap = 1.55328, relmipgap = 9.13187e-05
+No basis.
+---- 50% concluido... ---- 
+CPLEX 12.7.1.0: mipdisplay=4
+mipgap=0.05
+nodefile=3
+Found incumbent of value 52438.470000 after 0.00 sec. (0.03 ticks)
+MIP Presolve modified 1496 coefficients.
+Reduced MIP has 1117 rows, 966 columns, and 8807 nonzeros.
+Reduced MIP has 805 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Probing time = 0.00 sec. (0.55 ticks)
+MIP Presolve modified 379 coefficients.
+Reduced MIP has 1117 rows, 966 columns, and 8807 nonzeros.
+Reduced MIP has 805 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Probing time = 0.00 sec. (0.54 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.02 sec. (11.87 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                        52438.4700   -52438.4700           200.00%
+Found incumbent of value 52438.470000 after 0.04 sec. (25.05 ticks)
+      0     0    12882.1282   161    52438.4700    12882.1282      743   75.43%
+*     0+    0                        27998.4700    12882.1282            53.99%
+Found incumbent of value 27998.470000 after 0.05 sec. (28.20 ticks)
+      0     0        cutoff          27998.4700                    944    0.00%
+Elapsed time = 0.08 sec. (40.72 ticks, tree = 0.01 MB)
+
+Flow cuts applied:  121
+Mixed integer rounding cuts applied:  125
+Gomory fractional cuts applied:  133
+
+Root node processing (before b&c):
+  Real time             =    0.08 sec. (40.78 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.08 sec. (40.78 ticks)
+CPLEX 12.7.1.0: optimal integer solution; objective 27998.47
+944 MIP simplex iterations
+0 branch-and-bound nodes
+No basis.
+---- 75% concluido... ---- 
+CPLEX 12.7.1.0: mipdisplay=4
+mipgap=0.05
+nodefile=3
+Found incumbent of value 76865.230000 after 0.00 sec. (0.03 ticks)
+MIP Presolve modified 1457 coefficients.
+Reduced MIP has 1117 rows, 966 columns, and 8807 nonzeros.
+Reduced MIP has 805 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Probing time = 0.00 sec. (0.55 ticks)
+MIP Presolve modified 385 coefficients.
+Reduced MIP has 1117 rows, 966 columns, and 8807 nonzeros.
+Reduced MIP has 805 binaries, 1 generals, 0 SOSs, and 0 indicators.
+Probing time = 0.00 sec. (0.54 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.02 sec. (13.14 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                        76865.2300   -76865.2300           200.00%
+Found incumbent of value 76865.230000 after 0.05 sec. (26.50 ticks)
+      0     0    14087.4390   117    76865.2300    14087.4390      830   81.67%
+*     0     0      integral     0    46223.6500     Cuts: 315     1064    0.00%
+Found incumbent of value 46223.650000 after 0.07 sec. (39.16 ticks)
+      0     0        cutoff          46223.6500    46223.6500     1064    0.00%
+Elapsed time = 0.08 sec. (39.20 ticks, tree = 0.01 MB)
+
+Flow cuts applied:  104
+Mixed integer rounding cuts applied:  110
+Gomory fractional cuts applied:  101
+
+Root node processing (before b&c):
+  Real time             =    0.08 sec. (39.25 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.08 sec. (39.25 ticks)
+CPLEX 12.7.1.0: optimal integer solution; objective 46223.65
+1064 MIP simplex iterations
+0 branch-and-bound nodes
+No basis.
+CPLEX 12.7.1.0: mipdisplay=4
+mipgap=0.05
+nodefile=3
+Found incumbent of value 53879.080000 after 0.00 sec. (0.03 ticks)
+MIP Presolve eliminated 3 rows and 3 columns.
+MIP Presolve modified 1427 coefficients.
+Reduced MIP has 1083 rows, 939 columns, and 8547 nonzeros.
+Reduced MIP has 785 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Probing time = 0.00 sec. (0.53 ticks)
+MIP Presolve modified 348 coefficients.
+Reduced MIP has 1083 rows, 939 columns, and 8547 nonzeros.
+Reduced MIP has 785 binaries, 1 generals, 0 SOSs, and 0 indicators.
+Probing fixed 0 vars, tightened 2 bounds.
+Probing time = 0.00 sec. (0.53 ticks)
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.02 sec. (14.92 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                        53879.0800   -53868.9200           199.98%
+Found incumbent of value 53879.080000 after 0.04 sec. (27.86 ticks)
+      0     0    10906.4095   163    53879.0800    10906.4095      712   79.76%
+      0     0    26623.8958    17    53879.0800     Cuts: 365      917   50.59%
+*     0+    0                        26626.0400    26623.8958             0.01%
+Found incumbent of value 26626.040000 after 0.07 sec. (44.65 ticks)
+
+Cover cuts applied:  1
+Flow cuts applied:  120
+Mixed integer rounding cuts applied:  125
+Zero-half cuts applied:  1
+Gomory fractional cuts applied:  107
+
+Root node processing (before b&c):
+  Real time             =    0.07 sec. (44.78 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.07 sec. (44.78 ticks)
+CPLEX 12.7.1.0: optimal integer solution within mipgap or absmipgap; objective 26626.04
+917 MIP simplex iterations
+0 branch-and-bound nodes
+absmipgap = 2.14423, relmipgap = 8.05315e-05
+No basis.
+_total_solve_time = 1.01227
+

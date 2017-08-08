@@ -1,0 +1,16 @@
+include 3_NILM_LP_dados_medidor.dat;
+
+param:  ESTADO:    disp    ant        Pdisp    mindisc :=
+1        1        0        235        9
+2        2        0        5569    8
+3        3        0        7608    10
+4        4        0        3753    2
+5        5        0        2373    10
+6        6        0        131      0;
+
+
+let numdisp := 6;
+let standby_state := 6;
+let disc_i := 1;
+let window := 160;
+let TH := 30;
