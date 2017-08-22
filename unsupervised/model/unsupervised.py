@@ -5,6 +5,7 @@ from nilmtk import DataSet
 from nilmtk.disaggregate.hart_85 import Hart85
 import os
 from feature_extractor import find_steady_states
+from sklearn.cluster import KMeans
 
 
 # Input local data in WHE
@@ -37,10 +38,10 @@ def read_ph1(path):
 
     return pd.read_csv(path, header=None, names=['T', 'P'])
 
-def read_ph2(path):
-    month = pd.read_csv(path, header=None, names=['T', 'P'])
+def read_ph2(path, sync_flag=True):
+    df = pd.read_csv(path, header=None, names=['T', 'P'])
 
-    return sync_ph2(month)
+    return sync_ph2(df) if sync_flag else df
 
 def sync_ph2(month):
     FIRST_TS = month['T'][0] # First timestamp of the dataset
@@ -113,24 +114,23 @@ def simulate():
     # Send terminal command to run AMPL
     response = os.system("ampl 1_NILM_LP.run > z_results_out.out")
 
-def write_input_file(input_path, wind_size, standby):
+def write_input_table(input_path, wind_size, top_states, min_time, standby):
     with open(input_path,'w') as f:
         f.writelines('include 3_NILM_LP_dados_medidor.dat;\n\n'\
             'param:  ESTADO:    disp    ant        Pdisp    mindisc :=\n'\
-            '1        1        0        235        9\n'\
-            '2        2        0        5569    8\n'\
-            '3        3        0        7608    10\n'\
-            '4        4        0        3753    2\n'\
-            '5        5        0        2373    10\n'\
-            '6        6        0        {}      0;\n\n\n'.format(standby))
+            '1        1        0        {st[0]}        {mt[0]}\n'\
+            '2        2        0        {st[1]}        {mt[1]}\n'\
+            '3        3        0        {st[2]}        {mt[2]}\n'\
+            '4        4        0        {st[3]}        {mt[3]}\n'\
+            '5        5        0        {sb}           0;\n\n\n'.format(st = top_states, mt = min_time, sb = standby))
 
-        f.writelines('let numdisp := 6;\n'\
-                    'let standby_state := 6;\n'\
+        f.writelines('let numdisp := card(ESTADO);\n'\
+                    'let standby_state := card(ESTADO);\n'\
                     'let disc_i := 1;\n'\
                     'let window := {};\n'\
                     'let TH := 30;\n'.format(wind_size))
 
-def preprocess(df, q=0.05):
+def preprocess(df, q=0.01):
 
     # Convert df index to datetime
     df['T'] = pd.to_datetime(df['T'], unit='s')
@@ -142,20 +142,61 @@ def preprocess(df, q=0.05):
     # Get values for a given quantile q (default 5%)
     standby_power = int(df.quantile(q).values)
 
-    return transitions, standby_power
+    return steady_states, transitions, standby_power
+
+def get_top_states(edges, k=4):
+    # Get absolute value
+    edges_abs = edges.apply(lambda x: abs(x))
+
+    # If the number of edges is < k, fill the rest with zeros
+
+    if len(edges_abs.values)<k:
+        if len(edges_abs)>0:
+            top_states = edges_abs['active transition'].values.tolist()
+        else:
+            top_states = []
+
+        while len(top_states)<k:
+            top_states.append(0)
+        return top_states
+
+    # Perform k-means clustering
+    kmeans = KMeans(n_clusters=k, random_state=0).fit(edges_abs.values)
+    labels = kmeans.labels_
+
+    # Get median of each cluster to assing as top state
+    top_states = [round(np.median(edges_abs[labels==l])) for l in range(k)]
+
+    return top_states
+
+def get_min_time(edges, top_states, DEFAULT_MIN_TIME):
+
+    min_time = np.ones(len(top_states)) * DEFAULT_MIN_TIME
+    return min_time
+
+def remote_simulation(address):
+    print('Sending files to the remote server...')
+    os.system("scp -qp * {}:unsupervised/".format(address))
+
+    print('Simulating on remote AMPL...')
+    response = os.system("ssh -t '{}' 'cd unsupervised && ampl 1_NILM_LP.run > z_results_out.out'".format(address))
+
+    if response == 0:
+        print('Copying results from server to local machine...')
+        os.system("scp -qp {}:unsupervised/z_results_\* .".format(address))
+
+def send_to_server(address):
+    print('Sending files to the remote server...')
+    os.system("scp -qp z_results* {}:nilm-results/".format(address))
+
+
+
 
 def main():
-    '''
-    This file is split into 5 steps:
-            1. Create H5 file (optional to use as input in NILMTK)
-            2. Learn appliance's models (also optional if models weren't learned yet)
-            3. Disaggregate
-    '''
+
     ############ Input parameters and flags ###########
-    #create_h5 = False # Save Dataset
-    
-    #create_h5 = False
     ph2_ck = False # True - phase 2 ; False - phase 1
+    downsample_p2 = True # Check if it is necessary to downsample phase 2
     month = 'may'
     files_path = '/Users/wittmann/nilmtk/nilmtk/data/unsupervised/'
     h5_name = 'house_{}_{}.h5'.format(month, 2 if ph2_ck else 1)
@@ -171,10 +212,15 @@ def main():
     input_name = '3_NILM_LP_dados.dat'
     input_path = model_path + input_name
 
+    ground_truth_name = 'z_results_ground_truth.csv'
+
+    # Constants
     wind_size = 160 # Length of measurements for performing optimization
-    n_wind = 4 # Number of windows for performing preprocessing
-    n_meas = 1000 # Number of measurements to analyze and disaggregate
-    horizon = n_wind * wind_size # Horizon of measurements for preprocessing
+    n_wind = 4 if downsample_p2 else 12 # Number of windows for performing preprocessing
+    horizon_size = n_wind * wind_size # Horizon of measurements for preprocessing
+    n_hor = 40
+    n_meas = n_hor * horizon_size # Number of measurements to analyze and disaggregate
+    defalt_min_time = 8 if downsample_p2 else 24 # Default mintime value
 
     # Measurements with the phase 1 and 2 of the month
     ph1_path = '/Users/wittmann/projects/nilm-lp/unsupervised/data/{}_1.csv'.format(month)
@@ -183,6 +229,15 @@ def main():
     # Flag for Learn appliance's models from the last month
     learn_appliance = False
     describe_states = False
+
+    dsee_address = 'wittmann@ssh.dsee.fee.unicamp.br'
+
+    '''
+    This code is divided into 5 steps:
+        1. Create H5 file (optional to use as input in NILMTK)
+        2. Learn appliance's models (also optional if models weren't learned yet)
+        3. Disaggregate
+    '''
 
     ############ Beginning of logical implementation ############
 
@@ -199,31 +254,48 @@ def main():
 
     # 3. Disaggregate
     # Read full month dataset 
-    dataset = read_ph1(ph1_path) if not ph2_ck else read_ph1(ph1_path)
+    dataset = read_ph1(ph1_path) if not ph2_ck else read_ph2(ph2_path, downsample_p2)
 
-    # Clean the file with results and ground truth
+    # Create new file with results and ground truth
     open(model_path+'z_results_x.csv','w').close()
-    open(model_path+'z_ground_truth.csv','w').close()
+    open(model_path+ground_truth_name,'w').close()
+    open(model_path+'z_results_estado.csv','w').close()
 
-    # Perform a range over time (simulate real time disaggregation)
-    for t in range(0, n_meas, horizon):
+    n_meas = len(dataset)
+
+    # Perform a range over time (simulating real time disaggregation)
+    for t in range(0, n_meas, horizon_size):
+
+        t_f = t+horizon_size
+
+        if t_f > n_meas:
+            t_f = n_meas
 
         # Data for preprocessing and perform disaggregation
-        dataframe = dataset[t:t+horizon]
+        horizon = dataset[t:t_f]
 
         # Get edges from the last n_wind windows for the input table
-        edges, standby_power = preprocess(dataframe)
+        steady_states, edges, standby_power = preprocess(horizon)
 
-        # Write table of states for inputting in AMPL
-        write_input_file(input_path, wind_size, standby_power)
+        # Get top states to fill in the data table
+        top_states = get_top_states(edges)
+
+        # Get minimum time to fill in the data table
+        min_time = get_min_time(edges, top_states, defalt_min_time)
+
+        # Write data table to input on AMPL
+        write_input_table(input_path, wind_size, top_states, min_time, standby_power)
 
         # Update dataset and simulate
-        print('Simulating on AMPL from t = {} to t = {}'.format(t,t+horizon))
-        write_dataset(dataframe, dat_path)
+        print('Simulating on AMPL from t = {} to t = {}'.format(t,t_f))
+        write_dataset(horizon, dat_path)
         simulate()
 
         # Export ground gruth data for comparison
-        dataframe.to_csv('z_ground_truth.csv', mode='a', index=False, header=False)
+        horizon.to_csv(ground_truth_name, mode='a', index=False, header=False)
+
+        # Send results to my lab's machine
+        send_to_server(dsee_address)
 
 
 if __name__ == '__main__':
